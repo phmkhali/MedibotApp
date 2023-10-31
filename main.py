@@ -5,9 +5,11 @@ from login_page import LoginPage
 
 class App:
     def __init__(self):
+        # Main Window -------------------------------------------------------------------------- 
         self.root = tk.Tk()
         self.root.geometry('800x600')
         self.root.title('Medibot')
+        self.root.config(bg="#333333")
         self.root.resizable(False, False)
 
         self.frames = {}
@@ -17,6 +19,7 @@ class App:
 
         self.root.mainloop()
 
+    # Switch between windows -------------------------------------------------------------------------- 
     def create_frames(self):
         for frame_name in ["Login", "Home"]:
             frame = tk.Frame(self.root, bg='#333333')
