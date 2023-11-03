@@ -15,7 +15,7 @@ class App:
         self.frames = {}
 
         self.create_frames()
-        self.show_frame("Login")
+        self.show_frame("Home")
 
         self.root.mainloop()
 
