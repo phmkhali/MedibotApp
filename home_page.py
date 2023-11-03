@@ -7,6 +7,7 @@ class HomePage:
         self.root = root
         self.mainframe = tk.Frame(self.root, bg='#333333')
         self.mainframe.pack(expand=True, fill='both')
+        self.current_page = 'Home'
 
         # Navigation Bar-------------------------------------------------------------------------- 
         navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
@@ -60,6 +61,16 @@ class HomePage:
             switch_frame('Login')
         elif button_text == 'Send Robot':
             switch_frame('Send Robot')
+        else:
+            self.switch_frame(button_text)
+            self.current_page = button_text  # Update the current page
+
+        # Update button colors
+        for button in self.nav_buttons:
+            if button.cget('text') == self.current_page:
+                button['background'] = '#8c94c6'
+            else:
+                button['background'] = '#a0a9de'
 
     def on_button_hover(self, event):
         event.widget['background'] = '#8c94c6'

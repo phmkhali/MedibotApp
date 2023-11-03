@@ -1,7 +1,7 @@
 import tkinter as tk
 from home_page import HomePage
 from login_page import LoginPage
-from send_robot_page import SendRobotPage
+from request_robot_page import RequestRobotPage
 from feedback_page import FeedbackPage
 
 class App:
@@ -22,13 +22,13 @@ class App:
 
     # Switch between windows -------------------------------------------------------------------------- 
     def create_frames(self):
-        for frame_name in ["Login", "Home", "Send Robot", "Feedback"]:
+        for frame_name in ["Login", "Home", "Request Robot", "Feedback"]:
             frame = tk.Frame(self.root, bg='#333333')
             self.frames[frame_name] = frame
 
         LoginPage(self.frames["Login"], self.show_frame)
         HomePage(self.frames["Home"], self.show_frame)
-        SendRobotPage(self.frames["Send Robot"], self.show_frame)
+        RequestRobotPage(self.frames["Request Robot"], self.show_frame)
         FeedbackPage(self.frames["Feedback"], self.show_frame)
 
     def show_frame(self, frame_name):

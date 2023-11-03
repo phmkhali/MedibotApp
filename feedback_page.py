@@ -12,7 +12,7 @@ class FeedbackPage:
         navbar_frame = tk.Frame(self.mainframe, height=150, background='#a0a9de')
         navbar_frame.pack(fill='x')
 
-        buttons = ['Home', 'Send Robot', 'Feedback', 'Scan Area', 'Logout']
+        buttons = ['Home', 'Request Robot', 'Feedback', 'Scan Area', 'Logout']
         self.nav_buttons = []
         for button_text in buttons:
             button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text, switch_frame), bg='#a0a9de', bd=0)

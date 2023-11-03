@@ -8,7 +8,7 @@ class LoginPage:
         self.mainframe = tk.Frame(root, bg='#333333')
         self.mainframe.pack(expand=True)
 
-        self.header_label = ttk.Label(self.mainframe, text='Medibot', background='#333333', foreground='#a087c7', font=("Microsoft YaHei UI Light", 50))
+        self.header_label = ttk.Label(self.mainframe, text='Medibot', background='#333333', foreground='#a087c7', font=("Inter Bold", 50))
         self.header_label.grid(row=0, column=0, columnspan=2, pady=(0, 30), padx=20)
 
         # Entry fields -------------------------------------------------------------------------- 
