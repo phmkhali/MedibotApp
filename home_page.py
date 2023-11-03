@@ -13,7 +13,7 @@ class HomePage:
         navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
         navbar_frame.pack(fill='x')
 
-        buttons = ['Home', 'Send Robot', 'Feedback', 'Scan Area', 'Logout']
+        buttons = ['Home', 'Request Robot', 'Feedback', 'Scan Area', 'Logout']
         self.nav_buttons = []
         for button_text in buttons:
             button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text, switch_frame), bg='#a0a9de', bd=0)
@@ -59,8 +59,8 @@ class HomePage:
         if button_text == 'Logout':
             # Logout Firebase
             switch_frame('Login')
-        elif button_text == 'Send Robot':
-            switch_frame('Send Robot')
+        elif button_text == 'Request Robot':
+            switch_frame('Request Robot')
         else:
             self.switch_frame(button_text)
             self.current_page = button_text  # Update the current page

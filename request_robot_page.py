@@ -22,7 +22,7 @@ class RequestRobotPage:
             self.nav_buttons.append(button)
             button.bind("<Enter>", self.on_button_hover)  # hover event
 
-         # send_robot Page Content--------------------------------------------------------------------------
+         # Page Content--------------------------------------------------------------------------
         left_frame = tk.Frame(self.mainframe, width=400, background='#333333')
         left_frame.pack(fill='y', side='left', pady=20, padx=30)
         
