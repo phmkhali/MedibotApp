@@ -1,6 +1,6 @@
 import tkinter as tk
 
-class sendRobotPage:
+class SendRobotPage:
     def __init__(self, root, switch_frame):
         self.root = root
         self.mainframe = tk.Frame(self.root, bg='#333333')
@@ -19,4 +19,16 @@ class sendRobotPage:
             button.pack(side='left', fill='both', expand=True)
             self.nav_buttons.append(button)
             button.bind("<Enter>", self.on_button_hover)  # hover event
-            button.bind("<Leave>", self.on_button_leave)  # leave event    
+            button.bind("<Leave>", self.on_button_leave)  # leave event   
+
+
+    def button_click(self, button_text, switch_frame):
+        if button_text == 'Logout':
+            # Logout Firebase
+            switch_frame('Login')
+
+    def on_button_hover(self, event):
+        event.widget['background'] = '#8c94c6' 
+
+    def on_button_leave(self, event):
+        event.widget['background'] = '#a0a9de' 
