@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import PhotoImage
 
 class HomePage:
     def __init__(self, root, switch_frame):
@@ -25,11 +26,16 @@ class HomePage:
         left_frame = tk.Frame(self.mainframe, width=300, background='#333333')
         left_frame.pack(fill='y', side='left', pady=20, padx=30)
         
-        right_frame = tk.Frame(self.mainframe, background='blue', width=400)
+        right_frame = tk.Frame(self.mainframe, background='yellow', width=400)
         right_frame.pack(fill='y', side='right', pady=20, padx=30)
         
-        home_label = ttk.Label(left_frame, text='Medibot Home', background='#333333', foreground='white', font=("Microsoft YaHei UI Light", 45))
+        home_label = ttk.Label(left_frame, text='Medibot', background='#333333', foreground='white', font=("Microsoft YaHei UI Light", 45))
         home_label.pack(pady=20, anchor='center', expand=True)
+
+        # map
+        image = PhotoImage(file="example_map.png")
+        image_label = tk.Label(right_frame, image=image)
+        image_label.pack(pady=20, anchor='center', expand=True)
 
         # Status
         self.status_indicator = ttk.Label(left_frame, text='', background='#333333', foreground='white', font=("Microsoft YaHei UI Light", 18))
