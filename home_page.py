@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import PhotoImage
 
 class HomePage:
     def __init__(self, root, switch_frame):
@@ -22,17 +23,38 @@ class HomePage:
             button.bind("<Leave>", self.on_button_leave)  # leave event
 
         # Home Page Content-------------------------------------------------------------------------- 
-        left_frame = tk.Frame(self.mainframe, background='red', width=300)
+        left_frame = tk.Frame(self.mainframe, width=300, background='#333333')
         left_frame.pack(fill='y', side='left', pady=20, padx=30)
         
-        right_frame = tk.Frame(self.mainframe, background='blue', width=400)
+        right_frame = tk.Frame(self.mainframe, background='yellow', width=400)
         right_frame.pack(fill='y', side='right', pady=20, padx=30)
         
-        home_label = ttk.Label(left_frame, text='Medibot Home', background='#333333', foreground='white', font=("Microsoft YaHei UI Light", 45))
-        home_label.pack(pady=20, fill='both', anchor='center',expand=True)
+        home_label = ttk.Label(left_frame, text='Medibot', background='#333333', foreground='white', font=("Microsoft YaHei UI Light", 45))
+        home_label.pack(pady=20, anchor='center', expand=True)
 
-        status_label = ttk.Label(left_frame, text='current Status: connected', background='#333333', foreground='white', font=("Microsoft YaHei UI Light", 18))
-        status_label.pack(pady=20)
+        # map
+        image = PhotoImage(file="example_map.png")
+        image_label = tk.Label(right_frame, image=image)
+        image_label.pack(pady=20, anchor='center', expand=True)
+
+        # Status
+        self.status_indicator = ttk.Label(left_frame, text='', background='#333333', foreground='white', font=("Microsoft YaHei UI Light", 18))
+        self.status_indicator.pack(pady=20)
+        
+        self.status_canvas = tk.Canvas(left_frame, width=20, height=20, background='#333333', bd=0, highlightthickness=0)
+        self.status_canvas.pack(pady=20)
+        self.status_canvas.create_oval(2, 2, 18, 18, fill='green', outline='#333333')
+        self.update_status('connected')  # Initial status
+
+
+
+    def update_status(self, status):
+        if status == 'connected':
+            self.status_indicator.config(text='Status: connected')
+            self.status_canvas.itemconfig("status_indicator", fill='green')
+        else:
+            self.status_indicator.config(text='Status: disconnected')
+            self.status_canvas.itemconfig("status_indicator", fill='red')
 
     def button_click(self, button_text, switch_frame):
         if button_text == 'Logout':
@@ -40,10 +62,9 @@ class HomePage:
             switch_frame('Login')
         elif button_text == 'Send Robot':
             switch_frame('Send Robot')
-            pass    
 
     def on_button_hover(self, event):
-        event.widget['background'] = '#8c94c6' 
+        event.widget['background'] = '#8c94c6'
 
     def on_button_leave(self, event):
         event.widget['background'] = '#a0a9de'
