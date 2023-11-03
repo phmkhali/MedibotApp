@@ -19,8 +19,7 @@ class SendRobotPage:
             button.pack(side='left', fill='both', expand=True)
             self.nav_buttons.append(button)
             button.bind("<Enter>", self.on_button_hover)  # hover event
-            button.bind("<Leave>", self.on_button_leave)  # leave event    
-            
+
     def button_click(self, button_text, switch_frame):
         if button_text == 'Logout':
             # Logout Firebase

@@ -1,8 +1,6 @@
 import tkinter as tk
 from home_page import HomePage
 from login_page import LoginPage
-from send_robot_page import SendRobotPage
-from feedback_page import FeedbackPage
 
 class App:
     def __init__(self):
@@ -28,8 +26,6 @@ class App:
 
         LoginPage(self.frames["Login"], self.show_frame)
         HomePage(self.frames["Home"], self.show_frame)
-        SendRobotPage(self.frames["Send Robot"], self.show_frame)
-        FeedbackPage(self.frames["Feedback"], self.show_frame)
 
     def show_frame(self, frame_name):
         for frame in self.frames.values():

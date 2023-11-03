@@ -33,6 +33,8 @@ class HomePage:
         if button_text == 'Logout':
             # Logout Firebase
             switch_frame('Login')
+        elif button_text == 'Send Robot':
+            pass    
 
     def on_button_hover(self, event):
         event.widget['background'] = '#8c94c6' 
