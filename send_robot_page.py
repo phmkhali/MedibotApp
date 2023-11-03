@@ -1,6 +1,6 @@
 import tkinter as tk
 
-class sendRobotPage:
+class SendRobotPage:
     def __init__(self, root, switch_frame):
         self.root = root
         self.mainframe = tk.Frame(self.root, bg='#333333')
