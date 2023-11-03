@@ -9,8 +9,9 @@ class RequestRobotPage:
         self.mainframe.columnconfigure(0, weight=1)
         self.current_page = 'Request Robot'
 
+
         # Navigation Bar-------------------------------------------------------------------------- 
-        navbar_frame = tk.Frame(self.mainframe, height=150, background='#a0a9de')
+        navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
         navbar_frame.pack(fill='x')
 
         buttons = ['Home', 'Request Robot', 'Feedback', 'Scan Area', 'Logout']
@@ -21,7 +22,14 @@ class RequestRobotPage:
             button.pack(side='left', fill='both', expand=True)
             self.nav_buttons.append(button)
             button.bind("<Enter>", self.on_button_hover)  # hover event
-
+            button.bind("<Leave>", self.on_button_leave)  # leave event
+            
+        # Update button colors
+        for button in self.nav_buttons:
+            if button.cget('text') == self.current_page:
+                button['background'] = '#8c94c6'
+            else:
+                button['background'] = '#a0a9de'
          # Page Content--------------------------------------------------------------------------
         left_frame = tk.Frame(self.mainframe, width=400, background='#333333')
         left_frame.pack(fill='y', side='left', pady=20, padx=30)

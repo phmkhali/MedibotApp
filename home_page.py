@@ -22,6 +22,13 @@ class HomePage:
             self.nav_buttons.append(button)
             button.bind("<Enter>", self.on_button_hover)  # hover event
             button.bind("<Leave>", self.on_button_leave)  # leave event
+            
+        # Update button colors
+        for button in self.nav_buttons:
+            if button.cget('text') == self.current_page:
+                button['background'] = '#8c94c6'
+            else:
+                button['background'] = '#a0a9de'
 
         # Home Page Content-------------------------------------------------------------------------- 
         left_frame = tk.Frame(self.mainframe, width=300, background='#333333')
@@ -47,6 +54,7 @@ class HomePage:
         self.status_canvas.create_oval(2, 2, 18, 18, fill='green', outline='#333333', tags="status_indicator") 
         self.update_status('connected')  # Initial status
 
+
     def update_status(self, status):
         if status == 'connected':
                 self.status_indicator.config(text='Status: connected')
@@ -56,22 +64,18 @@ class HomePage:
                 self.status_canvas.itemconfig("status_indicator", fill='red') 
 
     def button_click(self, button_text, switch_frame):
+        self.current_page = button_text  
         if button_text == 'Logout':
             # Logout Firebase
             switch_frame('Login')
+        elif button_text == 'Home':
+            switch_frame('Home')
         elif button_text == 'Request Robot':
             switch_frame('Request Robot')
         else:
             self.switch_frame(button_text)
-            self.current_page = button_text  # Update the current page
-
-        # Update button colors
-        for button in self.nav_buttons:
-            if button.cget('text') == self.current_page:
-                button['background'] = '#8c94c6'
-            else:
-                button['background'] = '#a0a9de'
-
+            
+            
     def on_button_hover(self, event):
         event.widget['background'] = '#8c94c6'
 
