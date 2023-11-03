@@ -20,6 +20,27 @@ class SendRobotPage:
             self.nav_buttons.append(button)
             button.bind("<Enter>", self.on_button_hover)  # hover event
 
+         # send_robot Page Content--------------------------------------------------------------------------
+        selectDestinationLabel = tk.Label(self.mainframe, text="Select Destination")
+        selectDestinationLabel.pack()
+
+        options = ['Raum 1', 'Raum 2', 'Raum 3'] #todo: hier durch die Orte aus der Datenbank ergänzen.
+        self.selected_option = tk.StringVar()
+        orteDropdownMenu = tk.OptionMenu(self.mainframe, self.selected_option, *options)
+        orteDropdownMenu.pack()
+
+        medicationLabel = tk.Label(self.mainframe, text="Enter Medication Name")
+        medicationLabel.pack()
+
+        self.medication_entry = tk.Entry(self.mainframe)
+        self.medication_entry.pack()
+
+        patientLabel = tk.Label(self.mainframe, text="Enter Patient Name")
+        patientLabel.pack()
+
+        self.patient_entry = tk.Entry(self.mainframe)
+        self.patient_entry.pack()
+        
     def button_click(self, button_text, switch_frame):
         if button_text == 'Logout':
             # Logout Firebase
