@@ -14,7 +14,7 @@ class SendRobotPage:
         buttons = ['Home', 'Send Robot', 'Feedback', 'Scan Area', 'Logout']
         self.nav_buttons = []
         for button_text in buttons:
-            button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text), bg='#a0a9de', bd=0)
+            button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text, switch_frame), bg='#a0a9de', bd=0)
             button.config(height=3) 
             button.pack(side='left', fill='both', expand=True)
             self.nav_buttons.append(button)
@@ -40,11 +40,26 @@ class SendRobotPage:
 
         self.patient_entry = tk.Entry(self.mainframe)
         self.patient_entry.pack()
-        
+
+        addAnotherButton = tk.Button(root, text="Add another order", command=lambda text=button_text: self.button_click(text, switch_frame)) 
+        addAnotherButton.pack()
+
+        confirmButton = tk.Button(root, text="Confirm", command=lambda text=button_text: self.button_click(text, switch_frame))
+        confirmButton.pack()
+
     def button_click(self, button_text, switch_frame):
         if button_text == 'Logout':
             # Logout Firebase
             switch_frame('Login')
+        elif button_text == 'Send Robot':
+            switch_frame('Send Robot')
+        elif button_text == 'Home':
+            switch_frame('Home')
+        elif button_text == 'Add another order':
+            pass  
+        elif button_text == "Confirm":
+            pass
+            
 
     def on_button_hover(self, event):
         event.widget['background'] = '#8c94c6' 
