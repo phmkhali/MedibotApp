@@ -15,7 +15,7 @@ class HomePage:
         buttons = ['Home', 'Send Robot', 'Feedback', 'Scan Area', 'Logout']
         self.nav_buttons = []
         for button_text in buttons:
-            button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text), bg='#a0a9de', bd=0)
+            button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text, switch_frame), bg='#a0a9de', bd=0)
             button.config(height=3) 
             button.pack(side='left', fill='both', expand=True)
             self.nav_buttons.append(button)
@@ -31,8 +31,8 @@ class HomePage:
 
     def button_click(self, button_text, switch_frame):
         if button_text == 'Logout':
-            # Implement the functionality to log out here
-            pass
+            # Logout Firebase
+            switch_frame('Login')
 
     def on_button_hover(self, event):
         event.widget['background'] = '#8c94c6' 
