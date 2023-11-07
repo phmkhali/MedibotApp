@@ -1,12 +1,13 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import PhotoImage
+from tkinter import messagebox
 
 class RequestRobotPage:
     def __init__(self, root, switch_frame):
         self.root = root
         self.mainframe = tk.Frame(self.root, bg='#333333')
         self.mainframe.pack(expand=True, fill='both')
-        self.mainframe.columnconfigure(0, weight=1)
         self.current_page = 'Request Robot'
 
 
@@ -14,7 +15,7 @@ class RequestRobotPage:
         navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
         navbar_frame.pack(fill='x')
 
-        buttons = ['Home', 'Request Robot', 'Feedback', 'Scan Area', 'Logout']
+        buttons = ['Home', 'Request Robot', 'Pending Requests', 'Feedback', 'Logout']
         self.nav_buttons = []
         for button_text in buttons:
             button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text, switch_frame), bg='#a0a9de', bd=0)
@@ -30,35 +31,42 @@ class RequestRobotPage:
                 button['background'] = '#8c94c6'
             else:
                 button['background'] = '#a0a9de'
-         # Page Content--------------------------------------------------------------------------
-        left_frame = tk.Frame(self.mainframe, width=400, background='#333333')
-        left_frame.pack(fill='y', side='left', pady=20, padx=30)
+                
+        # Page Content--------------------------------------------------------------------------
+        left_frame = tk.Frame(self.mainframe, width=300, background='#333333')
+        left_frame.pack(fill='both', side='left', pady=20, padx=30)
         
-        right_frame = tk.Frame(self.mainframe, background='yellow', width=300)
-        right_frame.pack(fill='y', side='right', pady=20, padx=30)
+        right_frame = tk.Frame(self.mainframe, width=400)
+        right_frame.pack(fill='both', side='right', pady=20, padx=30)
 
-        selectDestinationLabel = tk.Label(left_frame, text="Select Destination")
-        selectDestinationLabel.pack()
+        select_destination_label = tk.Label(left_frame, text="Select Destination", background='#333333', foreground='white')
+        select_destination_label.grid(row=0,column=0,padx=10, pady=5, sticky='w') 
 
-        options = ['Raum 1', 'Raum 2', 'Raum 3'] #todo: hier durch die Orte aus der Datenbank ergänzen.
+        options = ['Room 1', 'Room 2', 'Room 3'] #todo: hier durch die Orte aus der Datenbank ergänzen.
         self.selected_option = tk.StringVar()
-        orteDropdownMenu = tk.OptionMenu(left_frame, self.selected_option, *options)
-        orteDropdownMenu.pack(padx=10, pady=5) 
+        location_dropdown = ttk.OptionMenu(left_frame, self.selected_option, *options)
+        location_dropdown.grid(row=0,column=1,padx=10, pady=10, sticky='ew') 
 
-        medicationLabel = tk.Label(left_frame, text="Enter Medication Name")
-        medicationLabel.pack(padx=10, pady=5) 
+        medication_label = tk.Label(left_frame, text="Enter Medication Name", background='#333333', foreground='white')
+        medication_label.grid(row=1,column=0,padx=10, pady=10, sticky='w') 
 
-        self.medication_entry = tk.Entry(left_frame)
-        self.medication_entry.pack(padx=10, pady=5) 
+        self.medication_entry = ttk.Entry(left_frame, width=20)
+        self.medication_entry.grid(row=1,column=1,padx=10, pady=10)  
+        
+        quantity_label = tk.Label(left_frame, text="Enter Medication Quantity", background='#333333', foreground='white')
+        quantity_label.grid(row=3,column=0,padx=10, pady=10, sticky='w') 
 
-        patientLabel = tk.Label(left_frame, text="Enter Patient Name")
-        patientLabel.pack(padx=10, pady=5) 
+        self.patient_entry = ttk.Entry(left_frame, width=20)
+        self.patient_entry.grid(row=3,column=1,padx=10, pady=10, sticky='w') 
 
-        self.patient_entry = tk.Entry(left_frame)
-        self.patient_entry.pack(padx=10, pady=5)
+        patient_label = tk.Label(left_frame, text="Enter Patient Name", background='#333333', foreground='white')
+        patient_label.grid(row=4,column=0,padx=10, pady=10, sticky='w') 
 
-        confirmButton = tk.Button(left_frame, text="Confirm", command=lambda text=button_text: self.button_click(text, switch_frame))
-        confirmButton.pack(side='left', fill='none', expand=True, padx=10, pady=5)
+        self.patient_entry = ttk.Entry(left_frame, width=20)
+        self.patient_entry.grid(row=4,column=1,padx=10, pady=10, sticky='w') 
+
+        confirm_button = ttk.Button(left_frame, text="Confirm",command=self.show_messagebox)
+        confirm_button.grid(row=5,column=0,padx=10, pady=10, sticky='w')
 
         #map
         image = PhotoImage(file="example_map.png")
@@ -75,10 +83,17 @@ class RequestRobotPage:
             switch_frame('Home')
         elif button_text == "Confirm":
             pass
-            
-
+    
     def on_button_hover(self, event):
         event.widget['background'] = '#8c94c6' 
 
     def on_button_leave(self, event):
         event.widget['background'] = '#a0a9de' 
+    
+    def show_messagebox(self):
+        destination = self.selected_option.get()
+        medication_name = self.medication_entry.get()
+        medication_quantity = self.patient_entry.get()
+
+        message = f"Destination: {destination}\nMedication Name: {medication_name}\nMedication Quantity: {medication_quantity}"
+        messagebox.showinfo("Confirmation", message)   

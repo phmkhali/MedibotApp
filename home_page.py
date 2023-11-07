@@ -7,28 +7,25 @@ class HomePage:
         self.root = root
         self.mainframe = tk.Frame(self.root, bg='#333333')
         self.mainframe.pack(expand=True, fill='both')
+        
         self.current_page = 'Home'
 
         # Navigation Bar-------------------------------------------------------------------------- 
         navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
         navbar_frame.pack(fill='x')
 
-        buttons = ['Home', 'Request Robot', 'Feedback', 'Scan Area', 'Logout']
+        buttons = ['Home', 'Request Robot', 'Pending Requests', 'Feedback', 'Logout']
         self.nav_buttons = []
         for button_text in buttons:
-            button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text, switch_frame), bg='#a0a9de', bd=0)
+            if button_text == self.current_page:
+                button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text, switch_frame), bg='#8c94c6', bd=0)
+            else:
+                button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text, switch_frame), bg='#a0a9de', bd=0)
             button.config(height=4) 
             button.pack(side='left', fill='both', expand=True)
             self.nav_buttons.append(button)
             button.bind("<Enter>", self.on_button_hover)  # hover event
             button.bind("<Leave>", self.on_button_leave)  # leave event
-            
-        # Update button colors
-        for button in self.nav_buttons:
-            if button.cget('text') == self.current_page:
-                button['background'] = '#8c94c6'
-            else:
-                button['background'] = '#a0a9de'
 
         # Home Page Content-------------------------------------------------------------------------- 
         left_frame = tk.Frame(self.mainframe, width=300, background='#333333')
@@ -65,6 +62,12 @@ class HomePage:
 
     def button_click(self, button_text, switch_frame):
         self.current_page = button_text  
+        for button in self.nav_buttons:
+            if button.cget('text') == button_text:
+                button['background'] = '#8c94c6'
+            else:
+                button['background'] = '#a0a9de'
+
         if button_text == 'Logout':
             # Logout Firebase
             switch_frame('Login')
