@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from db import create_user, sign_in
 
 class LoginPage:
     def __init__(self, root, switch_frame):
@@ -30,11 +31,20 @@ class LoginPage:
     def check_credentials(self, switch_frame):
         username = self.username_text_field.get()
         password = self.password_text_field.get()
-        if username == "admin" and password == "admin":
+        #if username == "admin" and password == "admin":
+        #    switch_frame("Home")
+        #else:
+        #    messagebox.showerror("Login Error", "Invalid username or password")
+        #self.clear_fields()
+
+        user_id = sign_in(email = username, password = password)
+
+        if user_id:
             switch_frame("Home")
+                         
         else:
-            messagebox.showerror("Login Error", "Invalid username or password")
-        self.clear_fields()
+            messagebox.showerror("Login Error", "Invalid username or password")                 
+        self.clear_fields()                                      
             
     def clear_fields(self):
         self.username_text_field.delete(0, 'end')
