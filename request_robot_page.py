@@ -15,7 +15,7 @@ class RequestRobotPage:
         navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
         navbar_frame.pack(fill='x')
 
-        buttons = ['Home', 'Request Robot', 'Pending Requests', 'Feedback', 'Logout']
+        buttons = ['Home', 'Request Robot', 'Pending Requests', 'Feedback', 'Config']
         self.nav_buttons = []
         for button_text in buttons:
             button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text, switch_frame), bg='#a0a9de', bd=0)
@@ -34,39 +34,39 @@ class RequestRobotPage:
                 
         # Page Content--------------------------------------------------------------------------
         left_frame = tk.Frame(self.mainframe, width=300, background='#333333')
-        left_frame.pack(fill='both', side='left', pady=20, padx=30)
+        left_frame.pack(side='left', pady=20, padx=(60,30),anchor='center')
         
         right_frame = tk.Frame(self.mainframe, width=400)
         right_frame.pack(fill='both', side='right', pady=20, padx=30)
-
+        
         select_destination_label = tk.Label(left_frame, text="Select Destination", background='#333333', foreground='white')
         select_destination_label.grid(row=0,column=0,padx=10, pady=5, sticky='w') 
 
         options = ['Room 1', 'Room 2', 'Room 3'] #todo: hier durch die Orte aus der Datenbank ergänzen.
         self.selected_option = tk.StringVar()
         location_dropdown = ttk.OptionMenu(left_frame, self.selected_option, *options)
-        location_dropdown.grid(row=0,column=1,padx=10, pady=10, sticky='ew') 
+        location_dropdown.grid(row=1,column=0,padx=10, sticky='w') 
 
         medication_label = tk.Label(left_frame, text="Enter Medication Name", background='#333333', foreground='white')
-        medication_label.grid(row=1,column=0,padx=10, pady=10, sticky='w') 
+        medication_label.grid(row=2,column=0,padx=10, pady=10, sticky='w') 
 
-        self.medication_entry = ttk.Entry(left_frame, width=20)
-        self.medication_entry.grid(row=1,column=1,padx=10, pady=10)  
+        self.medication_entry = ttk.Entry(left_frame, width=24)
+        self.medication_entry.grid(row=3,column=0,padx=10)  
         
         quantity_label = tk.Label(left_frame, text="Enter Medication Quantity", background='#333333', foreground='white')
-        quantity_label.grid(row=3,column=0,padx=10, pady=10, sticky='w') 
+        quantity_label.grid(row=4,column=0,padx=10, pady=10, sticky='w') 
 
-        self.patient_entry = ttk.Entry(left_frame, width=20)
-        self.patient_entry.grid(row=3,column=1,padx=10, pady=10, sticky='w') 
+        self.patient_entry = ttk.Entry(left_frame, width=24)
+        self.patient_entry.grid(row=5,column=0,padx=10, sticky='w') 
 
         patient_label = tk.Label(left_frame, text="Enter Patient Name", background='#333333', foreground='white')
-        patient_label.grid(row=4,column=0,padx=10, pady=10, sticky='w') 
+        patient_label.grid(row=6,column=0,padx=10, pady=10, sticky='w') 
 
-        self.patient_entry = ttk.Entry(left_frame, width=20)
-        self.patient_entry.grid(row=4,column=1,padx=10, pady=10, sticky='w') 
+        self.patient_entry = ttk.Entry(left_frame, width=24)
+        self.patient_entry.grid(row=7,column=0,padx=10, sticky='w') 
 
-        confirm_button = ttk.Button(left_frame, text="Confirm",command=self.show_messagebox)
-        confirm_button.grid(row=5,column=0,padx=10, pady=10, sticky='w')
+        confirm_button = tk.Button(left_frame, text="Confirm",background='#4C4273',relief='flat', foreground='white',command=self.show_messagebox, width=15)
+        confirm_button.grid(row=8,column=0,padx=10, pady=20, sticky='w')
 
         #map
         image = PhotoImage(file="example_map.png")
@@ -81,6 +81,8 @@ class RequestRobotPage:
             switch_frame('Request Robot')
         elif button_text == 'Home':
             switch_frame('Home')
+        elif button_text == 'Pending Requests':
+            switch_frame('Pending Requests')      
         elif button_text == "Confirm":
             pass
     
