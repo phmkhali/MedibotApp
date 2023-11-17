@@ -31,10 +31,10 @@ class HomePage:
 
         # Home Page Content-------------------------------------------------------------------------- 
         left_frame = tk.Frame(self.mainframe, width=300, background='#333333')
-        left_frame.pack(fill='y', side='left', pady=(150,0), padx=(60,0))
+        left_frame.pack(fill='y', side='left', pady=(150,40), padx=(60,0),expand=True)
 
         right_frame = tk.Frame(self.mainframe, background='#333333', width=400)
-        right_frame.pack(fill='both', expand=True, side='right', pady=20, padx=40)
+        right_frame.pack(fill='both', expand=True, side='right', pady=40, padx=40)
 
         home_label = ttk.Label(left_frame, text='Medibot', background='#333333', foreground='white', font=("Microsoft YaHei UI Bold", 45))
         home_label.grid(row=0, column=0, pady=10, sticky='w')
@@ -46,14 +46,14 @@ class HomePage:
         self.selected_option = tk.StringVar()
         medibot_dropdown = ttk.OptionMenu(left_frame, self.selected_option, *options)
         medibot_dropdown.config(width=25)
-        medibot_dropdown.grid(row=2, column=0, pady=10, sticky='w') 
+        medibot_dropdown.grid(row=2, column=0, sticky='w') 
 
         connect_button = tk.Button(left_frame, relief='flat', background='#4C4273', foreground='white', text='Connect', width='12')
         connect_button.grid(row=3, column=0, pady=10, sticky='w')
 
         # Status
         self.status_indicator = ttk.Label(left_frame, text='', background='#333333', foreground='white')
-        self.status_indicator.grid(row=4, column=0, pady=40, sticky='w')
+        self.status_indicator.grid(row=4, column=0, pady=40, sticky='sw')
         self.update_status('connected')  # Initial status
 
         # Right side

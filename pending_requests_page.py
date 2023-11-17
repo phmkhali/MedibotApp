@@ -97,10 +97,7 @@ class PendingRequestsPage:
             self.right_frame.pack_forget()
 
     def button_click(self, button_text, switch_frame):
-        if button_text == 'Logout':
-            # Logout Firebase
-            switch_frame('Login')
-        elif button_text == 'Request Robot':
+        if button_text == 'Request Robot':
             switch_frame('Request Robot')
         elif button_text == 'Home':
             switch_frame('Home')
