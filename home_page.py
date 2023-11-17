@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
-from main import logout
+from db import sign_out
 
 class HomePage:
     def __init__(self, root, switch_frame):
@@ -83,7 +83,7 @@ class HomePage:
         if button_text == 'Home':
             self.switch_frame('Home')
         elif button_text == 'Log out':
-            logout()  
+            sign_out()  
         elif button_text == 'Request Robot':
             self.switch_frame('Request Robot')
         elif button_text == 'Pending Requests':
