@@ -81,6 +81,8 @@ class RequestRobotPage:
             switch_frame('Request Robot')
         elif button_text == 'Home':
             switch_frame('Home')
+        elif button_text == 'Pending Requests':
+            switch_frame('Pending Requests')      
         elif button_text == "Confirm":
             pass
     
