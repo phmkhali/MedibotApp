@@ -8,9 +8,8 @@ firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-#müssen den Key noch besser verstecken, der darf so nicht auf GitHub
-#db.collection('medications').add({'name':'paracetamol', 'dose':400})
 
+#db.collection('medications').add({'name':'paracetamol', 'dose':400})
 
 
 #Authentication
@@ -39,3 +38,10 @@ def create_user(email, password):
         return None
 
 #create_user(email="smith@doctor.hos", password="123456")
+
+def sign_out():
+    try:
+        firebase_admin.auth.sign_out()
+        print('User successfully logged out.')
+    except FirebaseError as e:
+        print('Error logging out:', e)
