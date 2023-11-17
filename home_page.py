@@ -56,7 +56,7 @@ class HomePage:
         
         # Right side
         right_frame.grid_columnconfigure(0, weight=1)
-        logout_button = tk.Button(right_frame, relief='flat', background='#E83C3C',text='Log out', width='12')
+        logout_button = tk.Button(right_frame, relief='flat', background='#E83C3C',text='Log out', width='12',command=lambda text=button_text: self.button_click(text, switch_frame))
         logout_button.grid(row=0,column=0,pady=20, sticky='ne')
         
         # Map
