@@ -4,6 +4,7 @@ from login_page import LoginPage
 from request_robot_page import RequestRobotPage
 from feedback_page import FeedbackPage
 from pending_requests_page import PendingRequestsPage
+from db import sign_out
 
 class App:
     def __init__(self):
@@ -17,7 +18,7 @@ class App:
         self.frames = {}
 
         self.create_frames()
-        self.show_frame("Home")
+        self.show_frame("Login")
 
         self.root.mainloop()
 
@@ -37,6 +38,9 @@ class App:
         for frame in self.frames.values():
             frame.pack_forget()
         self.frames[frame_name].pack(fill='both', expand=True)
+
+    def logout(self):
+        sign_out()
 
 if __name__ == '__main__':
     App()
