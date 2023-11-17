@@ -37,18 +37,25 @@ class PendingRequestsPage:
         
         self.right_frame = tk.Frame(self.mainframe)
         
-        # todo: Liste sinnvoll befüllen
+        # todo: mit datenbank request tabelle ersetzen
         requestList = (("Paracetamol 500 ", 2,"Room 3"),("Ibuprofen 800", 3, "Room 2"),("Calcium Sandoz 500",1,"Room 2"))
         
         # tree
+        style = ttk.Style()
+        style.configure("Treeview.Heading", background="#a0a9de", foreground="black")
+        style.configure("Treeview", foreground="black", rowheight=25, fieldbackground="#d3d3d3")
+
+        # Configure selected item color
+        style.map("Treeview", background=[("selected", "#8c94c6")])
+        
         tree = ttk.Treeview(self.left_frame, columns=("Medication", "Quantity", "Room"), show="headings")
         tree.heading("Medication", text="Medication")
         tree.heading("Quantity", text="Quantity")
         tree.heading("Room", text="Room")
         
-        tree.column("Medication", width=150) 
-        tree.column("Quantity", width=100)     
-        tree.column("Room", width=100)       
+        tree.column("Medication", width=150, stretch=False) 
+        tree.column("Quantity", width=100, stretch=False)
+        tree.column("Room", width=100, stretch=False)  
 
         # Add data to the treeview
         for item in requestList:
