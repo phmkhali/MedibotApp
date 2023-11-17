@@ -29,16 +29,13 @@ class HomePage:
 
         # Home Page Content-------------------------------------------------------------------------- 
         left_frame = tk.Frame(self.mainframe, width=300, background='#333333')
-        left_frame.pack(fill='y', side='left', pady=20, padx=(60,0))
-        
-        logout_button = ttk.Button(self.mainframe,text='Log out')
-        logout_button.pack(side='right', pady=20, padx=40)
+        left_frame.pack(fill='y', side='left', pady=(150,0), padx=(60,0))
         
         right_frame = tk.Frame(self.mainframe, background='#333333', width=400)
-        right_frame.pack(side='right', pady=20, padx=40)
+        right_frame.pack(fill='both',expand=True,side='right', pady=20, padx=40)
         
         home_label = ttk.Label(left_frame, text='Medibot', background='#333333', foreground='white', font=("Microsoft YaHei UI Bold", 45))
-        home_label.grid(row=0,column=0,pady=(40,10),sticky='w')
+        home_label.grid(row=0,column=0,pady=10,sticky='w')
         
         select_robot = tk.Label(left_frame, text="Select Medibot", background='#333333', foreground='white')
         select_robot.grid(row=1,column=0, pady=10,sticky='w') 
@@ -46,34 +43,32 @@ class HomePage:
         options = ['Medibot 1', 'Medibot 2', 'Medibot 3'] #todo: Medibot connection
         self.selected_option = tk.StringVar()
         medibot_dropdown = ttk.OptionMenu(left_frame, self.selected_option, *options)
+        medibot_dropdown.config(width=25)
         medibot_dropdown.grid(row=2,column=0, pady=10,sticky='w') 
         
-        connect_button = ttk.Button(left_frame, text='Connect')
+        connect_button = tk.Button(left_frame, relief='flat', background='#4C4273', foreground='white',text='Connect', width='12')
         connect_button.grid(row=3,column=0, pady=10,sticky='w')
 
         # Status
-        self.status_indicator = ttk.Label(left_frame, text='', background='#333333', foreground='white', font=("Microsoft YaHei UI Light", 18))
-        self.status_indicator.grid(row=4, column=0,pady=(40,20), sticky='s')
-        
-        self.status_canvas = tk.Canvas(left_frame, width=20, height=20, background='#333333', bd=0, highlightthickness=0)
-        self.status_canvas.grid(row=5, column=0, pady=20, sticky='s')
-        self.status_canvas.create_oval(2, 2, 18, 18, fill='green', outline='#333333', tags="status_indicator") 
+        self.status_indicator = ttk.Label(left_frame, text='', background='#333333', foreground='white')
+        self.status_indicator.grid(row=4, column=0, pady=40,sticky='w')
         self.update_status('connected')  # Initial status
         
-                
+        # Right side
+        right_frame.grid_columnconfigure(0, weight=1)
+        logout_button = tk.Button(right_frame, relief='flat', background='#E83C3C',text='Log out', width='12')
+        logout_button.grid(row=0,column=0,pady=20, sticky='ne')
+        
         # Map
         image = PhotoImage(file="example_map.png")
         image_label = tk.Label(right_frame, image=image)
-        image_label.pack(pady=20, anchor='center', expand=True)
-
+        image_label.grid(pady=20, row=1,column=0)
 
     def update_status(self, status):
         if status == 'connected':
-                self.status_indicator.config(text='Status: Medibot 1 connected')
-                self.status_canvas.itemconfig("status_indicator", fill='green')  
+                self.status_indicator.config(text='Status: Medibot 1 connected') 
         else:
                 self.status_indicator.config(text='Status: disconnected')
-                self.status_canvas.itemconfig("status_indicator", fill='red') 
 
     def button_click(self, button_text, switch_frame):
         self.current_page = button_text  
