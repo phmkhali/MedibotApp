@@ -31,14 +31,13 @@ class PendingRequestsPage:
                 button['background'] = '#a0a9de'
                 
         # Page Content--------------------------------------------------------------------------
-        self.placeholder_frame = tk.Frame(self.mainframe, width=250, background='yellow')
-        self.placeholder_frame.pack(side='right', padx=30, pady= 20, fill='both')
+        self.placeholder_frame = tk.Frame(self.mainframe, width=250, background='#333333')
+        self.placeholder_frame.pack(side='right', padx=30, pady= 20, fill='y')
 
         self.left_frame = tk.Frame(self.mainframe, background='green')
         self.left_frame.pack(fill='both', side='left', pady=20, padx=30, expand=True)
         
         self.right_frame = tk.Frame(self.placeholder_frame)
-        self.right_frame.pack(fill='both')
         self.right_frame.pack_forget()
         
         # todo: Liste sinnvoll befüllen
@@ -59,20 +58,39 @@ class PendingRequestsPage:
             tree.insert("", tk.END, values=item)
 
         tree.pack(expand=True, fill='both')
+        tree.bind("<<TreeviewSelect>>", self.on_select)
 
-        self.info_label = ttk.Label(self.right_frame , text="Here should be all the Information")
-        self.info_label.pack()
+        self.med_qty_label = ttk.Label(self.right_frame, text="")
+        self.med_qty_label.pack()
         
+        self.location_label = ttk.Label(self.right_frame, text="")
+        self.location_label.pack()
+        
+        self.request_from_label = ttk.Label(self.right_frame, text="")
+        self.request_from_label.pack()
+
         self.right_frame.rowconfigure(1, weight=1)
+        
+        # submit button
         submit_button = tk.Button(self.right_frame,  relief='flat', background='#4C4273', foreground='white', width='12', text="Submit", command=lambda text=button_text: self.button_click(text, switch_frame) )
         submit_button.pack(side='bottom',pady=10)  
 
-
     def on_select(self, event):
-        selected_item = event.widget.get(event.widget.curselection())
-        #Je nachdem was in der Liste ist hier anpassen!
-        self.info_label["text"] = selected_item
-        self.right_frame.pack(fill='both', side='right', pady=20, padx=30)
+        self.med_qty_label["text"] = ""
+        self.location_label["text"] = ""
+        self.request_from_label["text"] = ""
+        selection = event.widget.selection()
+
+        if selection:
+            selected_item = event.widget.item(selection, 'values')
+            
+            self.med_qty_label["text"] = f"Selected Item: {selected_item[1]}x {selected_item[0]}"
+            self.location_label["text"] = f"Send to: {selected_item[2]}"
+            self.request_from_label["text"] = "Doctor Smith"
+            
+            self.right_frame.pack(side='right', padx=30, pady= 20, fill='both',expand=True)
+        else:
+            self.right_frame.pack_forget()
 
     def button_click(self, button_text, switch_frame):
         if button_text == 'Logout':
