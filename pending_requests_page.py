@@ -31,7 +31,7 @@ class PendingRequestsPage:
                 button['background'] = '#a0a9de'
                 
         # Page Content--------------------------------------------------------------------------
-        self.placeholder_frame = tk.Frame(self.mainframe, width=400, background='#333333')
+        self.placeholder_frame = tk.Frame(self.mainframe, width=250, background='yellow')
         self.placeholder_frame.pack(side='right', padx=30, pady= 20, fill='both')
 
         self.left_frame = tk.Frame(self.mainframe, background='green')
@@ -40,15 +40,25 @@ class PendingRequestsPage:
         self.right_frame = tk.Frame(self.placeholder_frame)
         self.right_frame.pack(fill='both')
         self.right_frame.pack_forget()
-
-        requestsList = tk.Listbox(self.left_frame)
-        requestsList.pack(fill ='both', expand= True)
-        requestsList.bind("<<ListboxSelect>>", self.on_select)
         
         # todo: Liste sinnvoll befüllen
-        requestsList.insert(tk.END, "Paracetamol 500            2 Qty       Room 3") #zum Testen
-        requestsList.insert(tk.END, "Paracetamol 500            1 Qty       Room 2")
-        requestsList.insert(tk.END, "Calcium Sandoz 500         1 Qty       Room 2")
+        requestList = (("Paracetamol 500 ", 2,"Room 3"),("Ibuprofen 800", 3, "Room 2"),("Calcium Sandoz 500",1,"Room 2"))
+        
+        # tree
+        tree = ttk.Treeview(self.left_frame, columns=("Medication", "Quantity", "Room"), show="headings")
+        tree.heading("Medication", text="Medication")
+        tree.heading("Quantity", text="Quantity")
+        tree.heading("Room", text="Room")
+        
+        tree.column("Medication", width=150)  # Adjust the width as needed
+        tree.column("Quantity", width=50)     # Adjust the width as needed
+        tree.column("Room", width=50)         # Adjust the width as needed
+
+        # Add data to the treeview
+        for item in requestList:
+            tree.insert("", tk.END, values=item)
+
+        tree.pack(expand=True, fill='both')
 
         self.info_label = ttk.Label(self.right_frame , text="Here should be all the Information")
         self.info_label.pack()
