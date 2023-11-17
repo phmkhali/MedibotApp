@@ -31,14 +31,11 @@ class PendingRequestsPage:
                 button['background'] = '#a0a9de'
                 
         # Page Content--------------------------------------------------------------------------
-        self.placeholder_frame = tk.Frame(self.mainframe, width=250, background='#333333')
-        self.placeholder_frame.pack(side='right', padx=30, pady= 20, fill='y')
 
-        self.left_frame = tk.Frame(self.mainframe, background='green')
-        self.left_frame.pack(fill='both', side='left', pady=20, padx=30, expand=True)
+        self.left_frame = tk.Frame(self.mainframe, width=350, height=400) 
+        self.left_frame.pack(fill='both', side='left', pady=40, padx=(60,0))
         
-        self.right_frame = tk.Frame(self.placeholder_frame)
-        self.right_frame.pack_forget()
+        self.right_frame = tk.Frame(self.mainframe)
         
         # todo: Liste sinnvoll befüllen
         requestList = (("Paracetamol 500 ", 2,"Room 3"),("Ibuprofen 800", 3, "Room 2"),("Calcium Sandoz 500",1,"Room 2"))
@@ -49,9 +46,9 @@ class PendingRequestsPage:
         tree.heading("Quantity", text="Quantity")
         tree.heading("Room", text="Room")
         
-        tree.column("Medication", width=150)  # Adjust the width as needed
-        tree.column("Quantity", width=50)     # Adjust the width as needed
-        tree.column("Room", width=50)         # Adjust the width as needed
+        tree.column("Medication", width=150) 
+        tree.column("Quantity", width=100)     
+        tree.column("Room", width=100)       
 
         # Add data to the treeview
         for item in requestList:
@@ -61,7 +58,7 @@ class PendingRequestsPage:
         tree.bind("<<TreeviewSelect>>", self.on_select)
 
         self.med_qty_label = ttk.Label(self.right_frame, text="")
-        self.med_qty_label.pack()
+        self.med_qty_label.pack(padx=10,pady=(10,0))
         
         self.location_label = ttk.Label(self.right_frame, text="")
         self.location_label.pack()
@@ -73,7 +70,7 @@ class PendingRequestsPage:
         
         # submit button
         submit_button = tk.Button(self.right_frame,  relief='flat', background='#4C4273', foreground='white', width='12', text="Submit", command=lambda text=button_text: self.button_click(text, switch_frame) )
-        submit_button.pack(side='bottom',pady=10)  
+        submit_button.pack(side='bottom', pady=10)  
 
     def on_select(self, event):
         self.med_qty_label["text"] = ""
@@ -87,8 +84,8 @@ class PendingRequestsPage:
             self.med_qty_label["text"] = f"Selected Item: {selected_item[1]}x {selected_item[0]}"
             self.location_label["text"] = f"Send to: {selected_item[2]}"
             self.request_from_label["text"] = "Doctor Smith"
-            
-            self.right_frame.pack(side='right', padx=30, pady= 20, fill='both',expand=True)
+        
+            self.right_frame.pack(side='right', pady=40, padx=(80,60), fill='both', expand=True) 
         else:
             self.right_frame.pack_forget()
 
