@@ -36,6 +36,9 @@ def create_user(email, password):
     except FirebaseError as e:
         print('Error creating user:', e)
         return None
+    
+#def get_current_user(): # wer hat request abgeschickt
+    
 
 #create_user(email="smith@doctor.hos", password="123456")
 
