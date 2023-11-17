@@ -31,21 +31,24 @@ class PendingRequestsPage:
                 button['background'] = '#a0a9de'
                 
         # Page Content--------------------------------------------------------------------------
+        self.placeholder_frame = tk.Frame(self.mainframe, width=400, background='#333333')
+        self.placeholder_frame.pack(side='right', padx=30, pady= 20, fill='y')
 
-        self.left_frame = tk.Frame(self.mainframe, width=1200, background='#333333')
-        self.left_frame.pack(fill='both', side='left', pady=20, padx=30)
+        self.left_frame = tk.Frame(self.mainframe, background='green')
+        self.left_frame.pack(fill='both', side='left', pady=20, padx=30, expand=True)
         
-        self.right_frame = tk.Frame(self.mainframe, width=600)
-        self.right_frame.pack(fill='both', side='right', pady=20, padx=30)
+        self.right_frame = tk.Frame(self.placeholder_frame)
+        self.right_frame.pack(fill='both', expand=True)
         self.right_frame.pack_forget()
 
         requestsList = tk.Listbox(self.left_frame)
-        requestsList.grid( row= 0, column= 0, padx=20 , pady= 20)
+        #requestsList.grid( row= 0, column= 0, padx=20 , pady= 20 , fill= tk.BOTH)
+        requestsList.pack(fill = tk.BOTH, expand= True)
         requestsList.bind("<<ListboxSelect>>", self.on_select)
         # todo: Liste sinnvoll befüllen
-        requestsList.insert(tk.END, "Paracetamol 500    2 Qty       Room 3") #zum Testen
-        requestsList.insert(tk.END, "Paracetamol 500    1 Qty       Room 2")
-        requestsList.insert(tk.END, "Calcium Sandoz 500 1 Qty       Room 2")
+        requestsList.insert(tk.END, "Paracetamol 500            2 Qty       Room 3") #zum Testen
+        requestsList.insert(tk.END, "Paracetamol 500            1 Qty       Room 2")
+        requestsList.insert(tk.END, "Calcium Sandoz 500         1 Qty       Room 2")
 
         self.Info_label = ttk.Label(self.right_frame , text="Here should be all the Information")
         self.Info_label.grid(row= 0, column=2, padx= 5, pady= 5, sticky=tk.N)
