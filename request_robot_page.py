@@ -57,14 +57,15 @@ class RequestRobotPage:
         # self updating combobox based on user input
         self.medication_var = tk.StringVar()
         self.medication_entry = ttk.Combobox(left_frame, width=24, textvariable=self.medication_var)
-        self.medication_entry.grid(row=3,column=0,padx=10)
-        self.medication_entry.bind("<KeyRelease>", self.update_combobox)
+        self.medication_entry.grid(row=3, column=0, padx=10)
+        self.medication_entry.bind("<<ComboboxSelected>>", self.update_combobox)
+
 
         quantity_label = tk.Label(left_frame, text="Enter Medication Quantity", background='#333333', foreground='white')
         quantity_label.grid(row=4,column=0,padx=10, pady=10, sticky='w')
 
-        self.patient_entry = ttk.Entry(left_frame, width=24)
-        self.patient_entry.grid(row=5,column=0,padx=10, sticky='w')
+        self.quantity_entry = ttk.Entry(left_frame, width=24)
+        self.quantity_entry.grid(row=5,column=0,padx=10, sticky='w')
 
         patient_label = tk.Label(left_frame, text="Enter Patient Name", background='#333333', foreground='white')
         patient_label.grid(row=6,column=0,padx=10, pady=10, sticky='w')
@@ -99,7 +100,8 @@ class RequestRobotPage:
     def show_messagebox(self):
         destination = self.selected_option.get()
         medication_name = self.medication_entry.get()
-        medication_quantity = self.patient_entry.get()
+        medication_quantity = self.quantity_entry.get()
+        patient_name = self.patient_entry.get()
         
         # Check if any entry fields are empty
         if not destination or not medication_name or not medication_quantity:
@@ -109,15 +111,15 @@ class RequestRobotPage:
         # who requested?
         current_user_name = get_current_user_email().split('@')[0]
         
-        message = f"Destination: {destination}\nMedication Name: {medication_name}\nMedication Quantity: {medication_quantity}\nRequest from user: {current_user_name}"
+        message = f"Destination: {destination}\nMedication Name: {medication_name}\nMedication Quantity: {medication_quantity}\Patient Name: {patient_name}\nRequest from user: {current_user_name}"
         
         # create request in db
-        create_request(destination,medication_name,medication_quantity)
+        create_request(destination,medication_name,medication_quantity,patient_name)
         print(get_requests)
         
         messagebox.showinfo("Confirmation", message)
 
-    def update_combobox(self):
+    def update_combobox(self, event):
         medication_names, _ = get_medication_db()  # Fetch medication names from the database
         user_input = self.medication_var.get().lower()
 
