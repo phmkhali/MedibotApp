@@ -39,8 +39,9 @@ class PendingRequestsPage:
         self.right_frame = tk.Frame(self.mainframe)
         
         #request from db
-        request_dict = get_requests()
-        requestList = {"Medication": request_dict["medName"], "Quantity":request_dict["quantity"], "Room": request_dict["location"]}
+        request_as_List = get_requests()
+        
+        requested_requests = [request for request in request_as_List if request.status == "requested"]
 
         # tree
         style = ttk.Style()
@@ -59,9 +60,11 @@ class PendingRequestsPage:
         tree.column("Quantity", width=100, stretch=False)
         tree.column("Room", width=100, stretch=False)  
 
+        #todo "wenn man drauf klickt!" Daten aus der Datenbank löschen damit da nicht so komische werte auftreten
+        #Also zum beispiel als auskommentierte methode in db
         # Add data to the treeview
-      #  for item in requestList:
-     #       tree.insert("", tk.END, values=item)
+        for request in requested_requests:
+            tree.insert("", tk.END, values=(request.user, request.quantity, request.location))
 
         tree.pack(expand=True, fill='both')
         tree.bind("<<TreeviewSelect>>", self.on_select)
