@@ -73,6 +73,18 @@ def get_medication_db():
 def create_request(location, medName, quantity, patientName):
     db.collection('request').add({'location':location, 'medName':medName, 'quantity':quantity, 'patientName':patientName, 'user':current_user, 'status':'requested'})
     
+def clear_requests():
+    try:
+        requests_ref = db.collection("request")
+        requests = requests_ref.stream()
+
+        for request_doc in requests:
+            request_doc.reference.delete()
+
+        print('All requests successfully deleted.')
+    except FirebaseError as e:
+        print('Error clearing database:', e)
+
 
 # get request from db
 def get_requests():
