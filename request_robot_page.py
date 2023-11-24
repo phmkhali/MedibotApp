@@ -38,10 +38,10 @@ class RequestRobotPage:
                 
         # Page Content--------------------------------------------------------------------------
         left_frame = tk.Frame(self.mainframe, width=300, background='#333333')
-        left_frame.pack(side='left', pady=20, padx=(60,30), anchor='center')
+        left_frame.pack(fill='y', side='left', pady=(100,40), padx=(40,0),expand=True)
 
-        right_frame = tk.Frame(self.mainframe, width=400)
-        right_frame.pack(fill='both', side='right', pady=20, padx=30)
+        right_frame = tk.Frame(self.mainframe, background='white', width=400)
+        right_frame.pack(fill='both', expand=True, side='right', pady=40, padx=40)
 
         select_destination_label = tk.Label(left_frame, text="Select Destination", background='#333333', foreground='white')
         select_destination_label.grid(row=0,column=0,padx=10, pady=5, sticky='w')
@@ -75,9 +75,7 @@ class RequestRobotPage:
         confirm_button.grid(row=8,column=0,padx=10, pady=20, sticky='w')
 
         #map
-        image = PhotoImage(file="example_map.png")
-        image_label = tk.Label(right_frame, image=image)
-        image_label.pack(pady=20, anchor='center', expand=True)
+        # add map
 
     def button_click(self, button_text, switch_frame):
         if button_text == 'Request Robot':
