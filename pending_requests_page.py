@@ -38,8 +38,10 @@ class PendingRequestsPage:
         self.right_frame = tk.Frame(self.mainframe)
         
         # todo: mit datenbank request tabelle ersetzen
-        requestList = (("Paracetamol 500 ", 2,"Room 3"),("Ibuprofen 800", 3, "Room 2"),("Calcium Sandoz 500",1,"Room 2"))
-        
+        self.firebase.get('/request', None)
+        #requestList = (("Paracetamol 500 ", 2,"Room 3"),("Ibuprofen 800", 3, "Room 2"),("Calcium Sandoz 500",1,"Room 2"))
+        requestList = self.firebase.get('/request', None)
+
         # tree
         style = ttk.Style()
         style.configure("Treeview.Heading", background="#a0a9de", foreground="black")
