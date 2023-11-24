@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter import messagebox
 from db import get_medication_names
-from db import get_current_user
+from db import get_current_user_email
 
 class RequestRobotPage:
     def __init__(self, root, switch_frame):
@@ -100,11 +100,17 @@ class RequestRobotPage:
         destination = self.selected_option.get()
         medication_name = self.medication_entry.get()
         medication_quantity = self.patient_entry.get()
+        
+        # Check if any entry fields are empty
+        if not destination or not medication_name or not medication_quantity:
+            messagebox.showerror("Error", "Please fill in all the fields.")
+            return
+
 
         # who requested?
-        current_user_name = get_current_user().split('@')[0]
+        current_user_name = get_current_user_email().split('@')[0]
 
-        message = f"Destination: {destination}\nMedication Name: {medication_name}\nMedication Quantity: {medication_quantity}\Request from user: {current_user_name}"
+        message = f"Destination: {destination}\nMedication Name: {medication_name}\nMedication Quantity: {medication_quantity}\nRequest from user: {current_user_name}"
         messagebox.showinfo("Confirmation", message)
 
     def update_combobox(self, event, medication_names):

@@ -7,16 +7,17 @@ cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
-
+current_user = ''
 
 #db.collection('medications').add({'name':'paracetamol', 'dose':400})
 
-
 #Authentication
 def sign_in(email, password):
+    global current_user # global variable
     try:
         user = auth.get_user_by_email(email)
         print('Successfully signed in as:', user.uid)
+        current_user = email
         return user.uid
     #except auth.AuthError as e:
     except FirebaseError as e:
@@ -37,17 +38,8 @@ def create_user(email, password):
         print('Error creating user:', e)
         return None
     
-def get_current_user():
-    try:
-        # Get the current user object
-        user = firebase_admin.auth.get_user()
-
-        # Extract and return the user's email
-        return user.email
-
-    except FirebaseError as e:
-        print('Error getting current user:', e)
-        return None
+def get_current_user_email():
+    return current_user
 
 
 # get meds from db
@@ -84,5 +76,6 @@ def sign_out():
     try:
         firebase_admin.auth.sign_out()
         print('User successfully logged out.')
+        current_user = ''
     except FirebaseError as e:
         print('Error logging out:', e)
