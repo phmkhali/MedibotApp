@@ -98,7 +98,7 @@ def get_requests():
             medName=request_data.get("medName"),
             location=request_data.get("location"),
             quantity=request_data.get("quantity"),
-            patientName=request_data.get("patientName")
+            patientName=request_data.get("patientName"),
             user=request_data.get("user"),
             status=request_data.get("status")
         )
