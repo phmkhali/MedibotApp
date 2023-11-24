@@ -58,8 +58,12 @@ def get_medication_names():
     medication_names = [medication.to_dict()["name"] for medication in medications]
     return medication_names
     
-#get request from db
 
+# create request from request_robot_page
+def create_request(location, medID, quantity):
+    db.collection('request').add({'location':location, 'medID':medID, 'quantity':quantity,'user':current_user})
+
+# get request from db
 def get_requests():
     requests = db.collection("request").where("status","==","requested").get()
     requests_dict = {}
