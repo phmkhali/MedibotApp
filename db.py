@@ -52,42 +52,26 @@ def get_medication_db():
 
     for med in medications:
         med_data = med.to_dict()
-        med_id = med_data.get("medID")
         name = med_data.get("name")
         unit = med_data.get("unit")
 
         # Create a dictionary with all the information
         med_dict = {
-            "medID": med_id,
             "name": name,
             "unit": unit,
         }
 
         # Store the dictionary in the overall medication_info dictionary
-        medication_info[med_id] = med_dict
+        medication_info[name] = med_dict
 
         # Append the name to the list
         medication_names.append(name)
 
     return medication_names, medication_info
 
-# get med name from id
-def get_medication_name_by_id(medID):
-    medications_ref = db.collection("medication")
-    medication_doc = medications_ref.document(medID).get()
-
-    if medication_doc.exists:
-        med_data = medication_doc.to_dict()
-        # Extract the "name" field
-        name = med_data.get("name")
-        return name
-    else:
-        return None  # Return None if the document with the specified medID doesn't exist
-    
-
 # create request from request_robot_page
-def create_request(location, medID, quantity):
-    db.collection('request').add({'location':location, 'medID':medID, 'quantity':quantity,'user':current_user})
+def create_request(location, medName, quantity, status):
+    db.collection('request').add({'location':location, 'medName':medName, 'quantity':quantity,'user':current_user, 'status':'requested'})
     
 
 # get request from db

@@ -4,6 +4,8 @@ from tkinter import PhotoImage
 from tkinter import messagebox
 from db import get_medication_db
 from db import get_current_user_email
+from db import create_request
+from db import get_requests
 
 class RequestRobotPage:
     def __init__(self, root, switch_frame):
@@ -52,10 +54,11 @@ class RequestRobotPage:
         medication_label = tk.Label(left_frame, text="Enter Medication Name", background='#333333', foreground='white')
         medication_label.grid(row=2,column=0,padx=10, pady=10, sticky='w')
 
+        # self updating combobox based on user input
         self.medication_var = tk.StringVar()
         self.medication_entry = ttk.Combobox(left_frame, width=24, textvariable=self.medication_var)
         self.medication_entry.grid(row=3,column=0,padx=10)
-        self.medication_entry.bind("<KeyRelease>", lambda event: self.update_combobox(event, *get_medication_db()))
+        self.medication_entry.bind("<KeyRelease>", self.update_combobox)
 
         quantity_label = tk.Label(left_frame, text="Enter Medication Quantity", background='#333333', foreground='white')
         quantity_label.grid(row=4,column=0,padx=10, pady=10, sticky='w')
@@ -78,10 +81,7 @@ class RequestRobotPage:
         image_label.pack(pady=20, anchor='center', expand=True)
 
     def button_click(self, button_text, switch_frame):
-        if button_text == 'Logout':
-            # Logout Firebase
-            switch_frame('Login')
-        elif button_text == 'Request Robot':
+        if button_text == 'Request Robot':
             switch_frame('Request Robot')
         elif button_text == 'Home':
             switch_frame('Home')
@@ -95,7 +95,7 @@ class RequestRobotPage:
 
     def on_button_leave(self, event):
         event.widget['background'] = '#a0a9de' 
-    
+        
     def show_messagebox(self):
         destination = self.selected_option.get()
         medication_name = self.medication_entry.get()
@@ -106,20 +106,25 @@ class RequestRobotPage:
             messagebox.showerror("Error", "Please fill in all the fields.")
             return
 
-
         # who requested?
         current_user_name = get_current_user_email().split('@')[0]
         
-        
         message = f"Destination: {destination}\nMedication Name: {medication_name}\nMedication Quantity: {medication_quantity}\nRequest from user: {current_user_name}"
+        
+        # create request in db
+        create_request(destination,medication_name,medication_quantity)
+        print(get_requests)
+        
         messagebox.showinfo("Confirmation", message)
 
-    def update_combobox(self, event, medication_names, medication_info):
-        # Get user input
-        user_input = self.medication_var.get().lower()  # Convert to lowercase for case-insensitive matching
+    def update_combobox(self):
+        medication_names, _ = get_medication_db()  # Fetch medication names from the database
+        user_input = self.medication_var.get().lower()
 
-        # Filter medications based on user input
-        matching_meds = [name for name in medication_names if user_input in name.lower()]
-
-        # Update combobox with matching medications
-        self.medication_entry['values'] = matching_meds
+        if not user_input:
+            # If nothing is written, show all medications
+            self.medication_entry['values'] = medication_names
+        else:
+            # Filter medications based on user input
+            matching_meds = [name for name in medication_names if user_input in name.lower()]
+            self.medication_entry['values'] = matching_meds
