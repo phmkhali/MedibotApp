@@ -37,10 +37,29 @@ def create_user(email, password):
         print('Error creating user:', e)
         return None
     
-#def get_current_user(): # wer hat request abgeschickt
+def get_current_user():
+    try:
+        # Get the current user object
+        user = firebase_admin.auth.get_user()
+
+        # Extract and return the user's email
+        return user.email
+
+    except FirebaseError as e:
+        print('Error getting current user:', e)
+        return None
+
 
 # get meds from db
 def get_medication_db():
+    medications_ref = db.collection("medication")
+    medications = medications_ref.stream()
+
+    medication_data = [{"medID": medication.id, "name": medication.to_dict()["name"]} for medication in medications]
+    return medication_data
+
+
+def get_medication_names():
     medications_ref = db.collection("medication")
     medications = medications_ref.stream()
 

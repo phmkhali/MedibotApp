@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter import messagebox
-from db import get_medication_db
+from db import get_medication_names
+from db import get_current_user
 
 class RequestRobotPage:
     def __init__(self, root, switch_frame):
@@ -54,7 +55,7 @@ class RequestRobotPage:
         self.medication_var = tk.StringVar()
         self.medication_entry = ttk.Combobox(left_frame, width=24, textvariable=self.medication_var)
         self.medication_entry.grid(row=3,column=0,padx=10)
-        self.medication_entry.bind("<KeyRelease>", lambda event: self.update_combobox(event, get_medication_db()))
+        self.medication_entry.bind("<KeyRelease>", lambda event: self.update_combobox(event, get_medication_names()))
 
         quantity_label = tk.Label(left_frame, text="Enter Medication Quantity", background='#333333', foreground='white')
         quantity_label.grid(row=4,column=0,padx=10, pady=10, sticky='w')
@@ -100,7 +101,10 @@ class RequestRobotPage:
         medication_name = self.medication_entry.get()
         medication_quantity = self.patient_entry.get()
 
-        message = f"Destination: {destination}\nMedication Name: {medication_name}\nMedication Quantity: {medication_quantity}"
+        # who requested?
+        current_user_name = get_current_user().split('@')[0]
+
+        message = f"Destination: {destination}\nMedication Name: {medication_name}\nMedication Quantity: {medication_quantity}\Request from user: {current_user_name}"
         messagebox.showinfo("Confirmation", message)
 
     def update_combobox(self, event, medication_names):
