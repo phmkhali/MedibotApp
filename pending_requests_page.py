@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from db import get_requests
 
 class PendingRequestsPage:
     def __init__(self, root, switch_frame):
@@ -37,10 +38,10 @@ class PendingRequestsPage:
         
         self.right_frame = tk.Frame(self.mainframe)
         
-        # todo: mit datenbank request tabelle ersetzen
-        self.firebase.get('/request', None)
+        #request from db
         #requestList = (("Paracetamol 500 ", 2,"Room 3"),("Ibuprofen 800", 3, "Room 2"),("Calcium Sandoz 500",1,"Room 2"))
-        requestList = self.firebase.get('/request', None)
+        request_dict = get_requests()
+        requestList = get_requests()
 
         # tree
         style = ttk.Style()
