@@ -70,8 +70,8 @@ def get_medication_db():
     return medication_names, medication_info
 
 # create request from request_robot_page
-def create_request(location, medName, quantity, status):
-    db.collection('request').add({'location':location, 'medName':medName, 'quantity':quantity,'user':current_user, 'status':'requested'})
+def create_request(location, medName, quantity, patientName):
+    db.collection('request').add({'location':location, 'medName':medName, 'quantity':quantity, 'patientName':patientName, 'user':current_user, 'status':'requested'})
     
 
 # get request from db
