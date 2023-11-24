@@ -47,7 +47,18 @@ def get_medication_db():
     medication_names = [medication.to_dict()["name"] for medication in medications]
     return medication_names
     
+#get request from db
 
+def get_requests():
+    requests = db.collection("request").where("status","==","requested").get()
+    requests_dict = {}
+    for item in requests:
+        item_dict = item.to_dict()
+        requests_dict[item.id] = item_dict
+    return requests_dict
+
+
+#create_user(email="smith@doctor.hos", password="123456")
 #create_user(email="jones@doctor.hos", password="123456")
 
 def sign_out():
