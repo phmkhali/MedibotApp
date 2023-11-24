@@ -41,8 +41,8 @@ class PendingRequestsPage:
         #request from db
         #requestList = (("Paracetamol 500 ", 2,"Room 3"),("Ibuprofen 800", 3, "Room 2"),("Calcium Sandoz 500",1,"Room 2"))
         request_dict = get_requests()
-        request_dict["medication"] = get_medication_name_by_id(request_dict["medID"])
-        requestList = {"Medication": request_dict["medication"], "Quantity":request_dict["quantity"], "Room": request_dict["location"]}
+       # request_dict["medication"] = get_medication_name_by_id(request_dict["medID"])
+      #  requestList = {"Medication": request_dict["medication"], "Quantity":request_dict["quantity"], "Room": request_dict["location"]}
 
         # tree
         style = ttk.Style()
@@ -62,8 +62,8 @@ class PendingRequestsPage:
         tree.column("Room", width=100, stretch=False)  
 
         # Add data to the treeview
-        for item in requestList:
-            tree.insert("", tk.END, values=item)
+      #  for item in requestList:
+     #       tree.insert("", tk.END, values=item)
 
         tree.pack(expand=True, fill='both')
         tree.bind("<<TreeviewSelect>>", self.on_select)
