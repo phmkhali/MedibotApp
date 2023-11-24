@@ -40,7 +40,7 @@ class PendingRequestsPage:
         
         #request from db
         request_dict = get_requests()
-        requestList = {"Medication": request_dict["medName"], "Quantity":request_dict["quantity"], "Room": request_dict["location"]}
+    #    requestList = {"Medication": request_dict["medName"], "Quantity":request_dict["quantity"], "Room": request_dict["location"]}
 
         # tree
         style = ttk.Style()
