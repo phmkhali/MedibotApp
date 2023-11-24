@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from db import get_requests
+from db import get_requests, get_medication_name_by_id
 
 class PendingRequestsPage:
     def __init__(self, root, switch_frame):
@@ -41,7 +41,8 @@ class PendingRequestsPage:
         #request from db
         #requestList = (("Paracetamol 500 ", 2,"Room 3"),("Ibuprofen 800", 3, "Room 2"),("Calcium Sandoz 500",1,"Room 2"))
         request_dict = get_requests()
-        requestList = get_requests()
+        request_dict["medication"] = get_medication_name_by_id(request_dict["medID"])
+        requestList = {"Medication": request_dict["medication"], "Quantity":request_dict["quantity"], "Room": request_dict["location"]}
 
         # tree
         style = ttk.Style()
