@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, auth
 from firebase_admin import firestore
 from firebase_admin.exceptions import FirebaseError
-
+from request import Request
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
@@ -76,12 +76,23 @@ def create_request(location, medName, quantity, status):
 
 # get request from db
 def get_requests():
-    requests = db.collection("request").where("status","==","requested").get()
-    requests_dict = {}
-    for item in requests:
-        item_dict = item.to_dict()
-        requests_dict[item.id] = item_dict
-    return requests_dict
+    requests = db.collection("request").get()
+    requests_List = []
+
+    for request_doc in requests:
+        request_data = request_doc.to_dict()
+
+        request_instance = Request(
+            medName=request_data.get("medName"),
+            location=request_data.get("location"),
+            quantity=request_data.get("quantity"),
+            user=request_data.get("user"),
+            status=request_data.get("status")
+        )
+
+        requests_List.append(request_instance)
+
+    return requests_List
 
 
 #create_user(email="smith@doctor.hos", password="123456")
