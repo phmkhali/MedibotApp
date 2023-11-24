@@ -38,9 +38,17 @@ def create_user(email, password):
         return None
     
 #def get_current_user(): # wer hat request abgeschickt
+
+# get meds from db
+def get_medication_db():
+    medications_ref = db.collection("medication")
+    medications = medications_ref.stream()
+
+    medication_names = [medication.to_dict()["name"] for medication in medications]
+    return medication_names
     
 
-#create_user(email="smith@doctor.hos", password="123456")
+#create_user(email="jones@doctor.hos", password="123456")
 
 def sign_out():
     try:
