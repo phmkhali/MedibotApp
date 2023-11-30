@@ -104,7 +104,7 @@ class RequestRobotPage:
         patient_name = self.patient_entry.get()
         
         # Check if any entry fields are empty
-        if not destination or not medication_name or not medication_quantity:
+        if not destination or not medication_name or not medication_quantity or not patient_name:
             messagebox.showerror("Error", "Please fill in all the fields.")
             return
 
@@ -118,5 +118,11 @@ class RequestRobotPage:
         print(get_requests)
         
         messagebox.showinfo("Confirmation", message)
+        
+        # Reset entry fields
+        self.selected_option.set(self.options[0])
+        self.medication_var.set(self.medication_names[0])
+        self.medication_quantity_entry.delete(0, 'end')
+        self.patient_entry.delete(0, 'end')
    
  
