@@ -96,7 +96,7 @@ class PendingRequestsPage:
             # to do: add unit
             self.med_qty_label["text"] = f"Selected Item: {selected_item[1]} {selected_item[0]}"
             self.location_label["text"] = f"Send to: {selected_item[2]}"
-            self.request_from_label["text"] = {selected_item[3]}
+            self.request_from_label["text"] = f"Request from: {selected_item[3]}"
         
             self.right_frame.pack(side='right', pady=40, padx=(80,60), fill='both', expand=True) 
         else:
@@ -107,7 +107,7 @@ class PendingRequestsPage:
             switch_frame('Request Robot')
         elif button_text == 'Home':
             switch_frame('Home')
-        elif button_text == "Submit":
+        elif button_text == "Submit": 
             pass #hier dann die progess bar!
     
     
