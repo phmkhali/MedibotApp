@@ -37,17 +37,17 @@ class PendingRequestsPage:
         self.left_frame.pack(fill='both', side='left', pady=40, padx=(60,0))
         
         self.right_frame = tk.Frame(self.mainframe)
-        
-        #request from db
-        request_as_List = get_requests()
-        
-        requested_requests = [request for request in request_as_List if request.status == "requested"]
 
         # tree
         style = ttk.Style()
         style.configure("Treeview.Heading", background="#a0a9de", foreground="black")
         style.configure("Treeview", foreground="black", rowheight=25, fieldbackground="#d3d3d3")
-
+        
+        # request from db
+        request_as_List = get_requests()
+        # requested with status 'requested'
+        requested_requests = [request for request in request_as_List if request.status == "requested"]
+        
         # Configure selected item color
         style.map("Treeview", background=[("selected", "#8c94c6")])
         
@@ -64,7 +64,7 @@ class PendingRequestsPage:
         #Also zum beispiel als auskommentierte methode in db
         # Add data to the treeview
         for request in requested_requests:
-            tree.insert("", tk.END, values=(request.user, request.quantity, request.location))
+            tree.insert("", tk.END, values=(request.med_name, request.quantity, request.location, request.user))
 
         tree.pack(expand=True, fill='both')
         tree.bind("<<TreeviewSelect>>", self.on_select)
@@ -93,9 +93,10 @@ class PendingRequestsPage:
         if selection:
             selected_item = event.widget.item(selection, 'values')
             
-            self.med_qty_label["text"] = f"Selected Item: {selected_item[1]}x {selected_item[0]}"
+            # to do: add unit
+            self.med_qty_label["text"] = f"Selected Item: {selected_item[1]} {selected_item[0]}"
             self.location_label["text"] = f"Send to: {selected_item[2]}"
-            self.request_from_label["text"] = "Doctor Smith"
+            self.request_from_label["text"] = {selected_item[3]}
         
             self.right_frame.pack(side='right', pady=40, padx=(80,60), fill='both', expand=True) 
         else:
