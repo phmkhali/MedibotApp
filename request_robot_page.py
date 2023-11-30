@@ -46,18 +46,17 @@ class RequestRobotPage:
         select_destination_label = tk.Label(left_frame, text="Select Destination", background='#333333', foreground='white')
         select_destination_label.grid(row=0,column=0,padx=10, pady=5, sticky='w')
 
-        options = ['Room 1', 'Room 2', 'Room 3'] #todo: hier durch die Orte aus der Datenbank ergänzen.
+        self.options = ['Room 1', 'Room 2', 'Room 3']
         self.selected_option = tk.StringVar()
-        location_dropdown = ttk.OptionMenu(left_frame, self.selected_option, *options)
-        location_dropdown.grid(row=1,column=0,padx=10, sticky='w')
+        self.location_dropdown = ttk.OptionMenu(left_frame, self.selected_option, self.options[0], *self.options)
+        self.location_dropdown.grid(row=1, column=0, padx=10, sticky='w')
 
         medication_label = tk.Label(left_frame, text="Enter Medication Name", background='#333333', foreground='white')
         medication_label.grid(row=2,column=0,padx=10, pady=10, sticky='w')
 
-        medication_names,_ = get_medication_db()
+        self.medication_names,_ = get_medication_db()
         self.medication_var = tk.StringVar()
-        self.medication_var.set(medication_names[0])
-        self.medication_entry = ttk.OptionMenu(left_frame, self.medication_var, *medication_names)
+        self.medication_entry = ttk.OptionMenu(left_frame, self.medication_var, self.medication_names[0],*self.medication_names)
         self.medication_entry.config(width=20)
         self.medication_entry.grid(row=3,column=0,padx=10, sticky='w')
 
@@ -102,6 +101,7 @@ class RequestRobotPage:
         destination = self.selected_option.get()
         medication_name = self.medication_var.get()
         medication_quantity = self.medication_quantity_entry.get()
+        patient_name = self.patient_entry.get()
         
         # Check if any entry fields are empty
         if not destination or not medication_name or not medication_quantity:
@@ -111,10 +111,12 @@ class RequestRobotPage:
         # who requested?
         current_user_name = get_current_user_email().split('@')[0]
         
-        message = f"Destination: {destination}\nMedication Name: {medication_name}\nMedication Quantity: {medication_quantity}\nRequest from user: {current_user_name}"
+        message = f"Destination: {destination}\nMedication Name: {medication_name}\nMedication Quantity: {medication_quantity}\nRequest from user: {current_user_name}\nPatient: {patient_name}"
         
         # create request in db
-        create_request(destination,medication_name,medication_quantity)
+        create_request(destination,medication_name,medication_quantity,patient_name)
         print(get_requests)
         
         messagebox.showinfo("Confirmation", message)
+   
+ 
