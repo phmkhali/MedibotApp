@@ -54,23 +54,25 @@ class RequestRobotPage:
         medication_label = tk.Label(left_frame, text="Enter Medication Name", background='#333333', foreground='white')
         medication_label.grid(row=2,column=0,padx=10, pady=10, sticky='w')
 
-        # self updating combobox based on user input
+        medication_names,_ = get_medication_db()
         self.medication_var = tk.StringVar()
-        self.medication_entry = ttk.Combobox(left_frame, width=24, textvariable=self.medication_var)
-        self.medication_entry.grid(row=3,column=0,padx=10)
-        self.medication_entry.bind("<KeyRelease>", self.update_combobox)
+        self.medication_var.set(medication_names[0])
+        self.medication_entry = ttk.OptionMenu(left_frame, self.medication_var, *medication_names)
+        self.medication_entry.config(width=20)
+        self.medication_entry.grid(row=3,column=0,padx=10, sticky='w')
 
         quantity_label = tk.Label(left_frame, text="Enter Medication Quantity", background='#333333', foreground='white')
         quantity_label.grid(row=4,column=0,padx=10, pady=10, sticky='w')
 
-        self.patient_entry = ttk.Entry(left_frame, width=24)
-        self.patient_entry.grid(row=5,column=0,padx=10, sticky='w')
+        self.medication_quantity_entry = ttk.Entry(left_frame, width=24)
+        self.medication_quantity_entry.grid(row=5,column=0,padx=10, sticky='w')
 
         patient_label = tk.Label(left_frame, text="Enter Patient Name", background='#333333', foreground='white')
         patient_label.grid(row=6,column=0,padx=10, pady=10, sticky='w')
 
         self.patient_entry = ttk.Entry(left_frame, width=24)
         self.patient_entry.grid(row=7,column=0,padx=10, sticky='w')
+
 
         confirm_button = tk.Button(left_frame, text="Confirm", background='#4C4273', relief='flat', foreground='white', command=self.show_messagebox, width=15)
         confirm_button.grid(row=8,column=0,padx=10, pady=20, sticky='w')
@@ -98,8 +100,8 @@ class RequestRobotPage:
         
     def show_messagebox(self):
         destination = self.selected_option.get()
-        medication_name = self.medication_entry.get()
-        medication_quantity = self.patient_entry.get()
+        medication_name = self.medication_var.get()
+        medication_quantity = self.medication_quantity_entry.get()
         
         # Check if any entry fields are empty
         if not destination or not medication_name or not medication_quantity:
@@ -116,15 +118,3 @@ class RequestRobotPage:
         print(get_requests)
         
         messagebox.showinfo("Confirmation", message)
-
-    def update_combobox(self):
-        medication_names, _ = get_medication_db()  # Fetch medication names from the database
-        user_input = self.medication_var.get().lower()
-
-        if not user_input:
-            # If nothing is written, show all medications
-            self.medication_entry['values'] = medication_names
-        else:
-            # Filter medications based on user input
-            matching_meds = [name for name in medication_names if user_input in name.lower()]
-            self.medication_entry['values'] = matching_meds
