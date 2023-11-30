@@ -5,6 +5,8 @@ from request_robot_page import RequestRobotPage
 from feedback_page import FeedbackPage
 from pending_requests_page import PendingRequestsPage
 
+from db import clear_requests
+
 class App:
     def __init__(self):
         # Main Window -------------------------------------------------------------------------- 
@@ -18,6 +20,7 @@ class App:
 
         self.create_frames()
         self.show_frame("Login")
+        clear_requests()
 
         self.root.mainloop()
 
