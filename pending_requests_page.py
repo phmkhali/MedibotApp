@@ -44,9 +44,9 @@ class PendingRequestsPage:
         style.configure("Treeview", foreground="black", rowheight=25, fieldbackground="#d3d3d3")
         
         # request from db
-        request_as_List = get_requests()
+        all_requests = get_requests()
         # requested with status 'requested'
-        requested_requests = [request for request in request_as_List if request.status == "requested"]
+        requests_with_requested_status = [request for request in all_requests if request.status == "requested"]
         
         # Configure selected item color
         style.map("Treeview", background=[("selected", "#8c94c6")])
@@ -63,7 +63,7 @@ class PendingRequestsPage:
         #todo "wenn man drauf klickt!" Daten aus der Datenbank löschen damit da nicht so komische werte auftreten
         #Also zum beispiel als auskommentierte methode in db
         # Add data to the treeview
-        for request in requested_requests:
+        for request in requests_with_requested_status:
             tree.insert("", tk.END, values=(request.med_name, request.quantity, request.location, request.user))
 
         tree.pack(expand=True, fill='both')
