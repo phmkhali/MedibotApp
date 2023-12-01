@@ -44,8 +44,6 @@ class PendingRequestsPage:
         style = ttk.Style()
         style.configure("Treeview.Heading", background="#a0a9de", foreground="black")
         style.configure("Treeview", foreground="black", rowheight=25, fieldbackground="#d3d3d3")
-
-        # Configure selected item color
         style.map("Treeview", background=[("selected", "#8c94c6")])
         
         self.tree = ttk.Treeview(self.left_frame, columns=("Medication", "Quantity", "Room"), show="headings")
@@ -67,6 +65,9 @@ class PendingRequestsPage:
         self.location_label = ttk.Label(self.right_frame, text="")
         self.location_label.pack()
         
+        self.patient_name_label = ttk.Label(self.right_frame, text="")
+        self.patient_name_label.pack()
+        
         self.request_from_label = ttk.Label(self.right_frame, text="")
         self.request_from_label.pack()
 
@@ -80,6 +81,7 @@ class PendingRequestsPage:
         self.med_qty_label["text"] = ""
         self.location_label["text"] = ""
         self.request_from_label["text"] = ""
+        self.patient_name_label["text"] = ""
         selection = event.widget.selection()
 
         if selection:
@@ -88,7 +90,8 @@ class PendingRequestsPage:
             # to do: add unit
             self.med_qty_label["text"] = f"Selected Item: {selected_item[1]} {selected_item[0]}"
             self.location_label["text"] = f"Send to: {selected_item[2]}"
-            self.request_from_label["text"] = f"Request from: {selected_item[3]}"
+            self.patient_name_label["text"] = f"Patient: {selected_item[3]}"
+            self.request_from_label["text"] = f"Request from: {selected_item[4]}"
         
             self.right_frame.pack(side='right', pady=40, padx=(80,60), fill='both', expand=True) 
         else:
@@ -125,5 +128,4 @@ class PendingRequestsPage:
             self.tree.delete(item)
         
         for request in requests_with_requested_status:
-            self.tree.insert("", tk.END, values=(request.med_name, request.quantity, request.location, request.user))
-            self.tree.pack(expand=True, fill='both')
+            self.tree.insert("", tk.END, values=(request.med_name, request.quantity, request.location, request.patientName, request.user))
