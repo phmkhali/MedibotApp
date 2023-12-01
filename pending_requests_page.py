@@ -8,7 +8,9 @@ class PendingRequestsPage:
         self.mainframe = tk.Frame(self.root, bg='#333333')
         self.mainframe.pack(expand=True, fill='both')
         self.current_page = 'Pending Requests'
-
+        
+        # update every 5 seconds
+        self.root.after(5000, self.update_tree)
 
         # Navigation Bar-------------------------------------------------------------------------- 
         navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
@@ -42,32 +44,22 @@ class PendingRequestsPage:
         style = ttk.Style()
         style.configure("Treeview.Heading", background="#a0a9de", foreground="black")
         style.configure("Treeview", foreground="black", rowheight=25, fieldbackground="#d3d3d3")
-        
-        # request from db
-        all_requests = get_requests()
-        # requested with status 'requested'
-        requests_with_requested_status = [request for request in all_requests if request.status == "requested"]
-        
+
         # Configure selected item color
         style.map("Treeview", background=[("selected", "#8c94c6")])
         
-        tree = ttk.Treeview(self.left_frame, columns=("Medication", "Quantity", "Room"), show="headings")
-        tree.heading("Medication", text="Medication")
-        tree.heading("Quantity", text="Quantity")
-        tree.heading("Room", text="Room")
+        self.tree = ttk.Treeview(self.left_frame, columns=("Medication", "Quantity", "Room"), show="headings")
+        self.tree.heading("Medication", text="Medication")
+        self.tree.heading("Quantity", text="Quantity")
+        self.tree.heading("Room", text="Room")
         
-        tree.column("Medication", width=150, stretch=False) 
-        tree.column("Quantity", width=100, stretch=False)
-        tree.column("Room", width=100, stretch=False)  
+        self.tree.column("Medication", width=150, stretch=False) 
+        self.tree.column("Quantity", width=100, stretch=False)
+        self.tree.column("Room", width=100, stretch=False)  
 
-        #todo "wenn man drauf klickt!" Daten aus der Datenbank löschen damit da nicht so komische werte auftreten
-        #Also zum beispiel als auskommentierte methode in db
-        # Add data to the treeview
-        for request in requests_with_requested_status:
-            tree.insert("", tk.END, values=(request.med_name, request.quantity, request.location, request.user))
-
-        tree.pack(expand=True, fill='both')
-        tree.bind("<<TreeviewSelect>>", self.on_select)
+        self.fill_tree()
+        self.tree.pack(expand=True, fill='both')
+        self.tree.bind("<<TreeviewSelect>>", self.on_select)
 
         self.med_qty_label = ttk.Label(self.right_frame, text="")
         self.med_qty_label.pack(padx=10,pady=(10,0))
@@ -110,9 +102,28 @@ class PendingRequestsPage:
         elif button_text == "Submit": 
             pass #hier dann die progess bar!
     
-    
     def on_button_hover(self, event):
         event.widget['background'] = '#8c94c6' 
 
     def on_button_leave(self, event):
         event.widget['background'] = '#a0a9de' 
+        
+    # tree methods
+    def update_tree(self):
+        self.fill_tree()
+        # next update
+        self.root.after(5000, self.update_tree)
+        
+    def fill_tree(self):
+        # request from db
+        all_requests = get_requests()
+        # requested with status 'requested'
+        requests_with_requested_status = [request for request in all_requests if request.status == "requested"]
+        
+        # clear existing items in the tree
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+        
+        for request in requests_with_requested_status:
+            self.tree.insert("", tk.END, values=(request.med_name, request.quantity, request.location, request.user))
+            self.tree.pack(expand=True, fill='both')
