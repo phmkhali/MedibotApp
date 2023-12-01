@@ -113,7 +113,22 @@ class PendingRequestsPage:
         
     # tree methods
     def update_tree(self):
+        # get selected item before updating the tree
+        selection = self.tree.selection()
+        selected_item = None
+        if selection:
+            selected_item = self.tree.item(selection[0], 'values')
+        
+        # update the tree
         self.fill_tree()
+        
+        # reselect the item after update
+        if selected_item:
+            for item in self.tree.get_children():
+                if self.tree.item(item, 'values') == selected_item:
+                    self.tree.selection_set(item)
+                    break
+                
         # next update
         self.root.after(5000, self.update_tree)
         
