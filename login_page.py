@@ -36,15 +36,15 @@ class LoginPage:
         #else:
         #    messagebox.showerror("Login Error", "Invalid username or password")
         #self.clear_fields()
-
-        user_id = sign_in(email = username, password = password)
-
-        if user_id:
-            switch_frame("Home")
-                         
+        if username == "" or password == "":
+            messagebox.showerror("Login Error", "Invalid username or password")
         else:
-            messagebox.showerror("Login Error", "Invalid username or password")                 
-        self.clear_fields()                                      
+            user_id = sign_in(email = username, password = password)
+            if user_id:
+                switch_frame("Home")
+            else:
+                messagebox.showerror("Login Error", "Invalid username or password")                 
+            self.clear_fields()                                      
             
     def clear_fields(self):
         self.username_text_field.delete(0, 'end')
