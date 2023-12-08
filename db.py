@@ -107,6 +107,13 @@ def get_requests():
 
     return requests_List
 
+# generate feedback for delivering request
+def get_requests_with_status_delivering():
+    
+    all_requests = db.collection("request").get()
+    requests_with_currently_delivering_status = [request for request in all_requests if request.status == "currently delivering"]
+
+    return requests_with_currently_delivering_status
 
 #create_user(email="smith@doctor.hos", password="123456")
 #create_user(email="jones@doctor.hos", password="123456")
