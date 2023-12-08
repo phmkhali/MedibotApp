@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from db import get_requests_with_status_delivering, get_current_user_email
 
 class FeedbackPage:
     def __init__(self, root, switch_frame):
@@ -31,15 +32,23 @@ class FeedbackPage:
                 button['background'] = '#a0a9de'
 
         # Page Content-------------------------------------------------------------------------- 
-        self.left_frame = tk.Frame(self.mainframe, width=350, height=400, background='#333333') 
-        self.left_frame.pack(fill='both', side='left', pady=60, padx=(60,0))
-        
+        self.left_frame = tk.Frame(self.mainframe, width=350, height=400, background='#333333')
         self.right_frame = tk.Frame(self.mainframe)
 
+        
+        # fill labels
+        requests_for_current_user = get_request_for_current_user() 
+        
+        if requests_for_current_user:
+            self.left_frame.pack(fill='both', side='left', pady=60, padx=(60,0))
+        else:
+            empty_label = tk.Label(self.mainframe, text="None of your orders currently delivering.", background='#333333', foreground='white')
+            empty_label.pack(pady=30)
+            
         select_title_label = tk.Label(self.left_frame, text="Order Summary", background='#333333', foreground='white')
         select_title_label.config(font=("TkDefaultFont", 12, "bold"))
         select_title_label.grid(row=0,column=0,padx=10, pady=10, sticky='w')
-
+        
         medication_label = tk.Label(self.left_frame, text="Medication", background='#333333', foreground='white')
         medication_label.grid(row=1,column=0,padx=10, pady=(5,0), sticky='w')
         
@@ -71,10 +80,16 @@ class FeedbackPage:
                 pass
         
     def on_button_hover(self, event):
-            event.widget['background'] = '#8c94c6' 
+        event.widget['background'] = '#8c94c6' 
 
     def on_button_leave(self, event):
-            event.widget['background'] = '#a0a9de' 
+        event.widget['background'] = '#a0a9de' 
+    
+    # show currently processed order
+def get_request_for_current_user():
+    current_user = get_current_user_email()
+    user_requests_delivering = get_requests_with_status_delivering(current_user)
+    return user_requests_delivering
             
 
     
