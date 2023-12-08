@@ -3,6 +3,7 @@ from home_page import HomePage
 from login_page import LoginPage
 from request_robot_page import RequestRobotPage
 from feedback_page import FeedbackPage
+from db import clear_requests
 from pending_requests_page import PendingRequestsPage
 
 class App:

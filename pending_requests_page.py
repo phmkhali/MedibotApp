@@ -102,6 +102,8 @@ class PendingRequestsPage:
             switch_frame('Request Robot')
         elif button_text == 'Home':
             switch_frame('Home')
+        elif button_text == 'Feedback':
+            switch_frame('Feedback')  
         elif button_text == "Submit": 
             pass #hier dann die progess bar!
     
@@ -137,10 +139,13 @@ class PendingRequestsPage:
         all_requests = get_requests()
         # requested with status 'requested'
         requests_with_requested_status = [request for request in all_requests if request.status == "requested"]
-        
+
+        # Sort the requests by room
+        requests_with_requested_status = sorted(requests_with_requested_status, key=lambda x: x.location)
+
         # clear existing items in the tree
         for item in self.tree.get_children():
             self.tree.delete(item)
-        
+
         for request in requests_with_requested_status:
             self.tree.insert("", tk.END, values=(request.med_name, request.quantity, request.location, request.patientName, request.user))

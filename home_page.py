@@ -88,6 +88,8 @@ class HomePage:
             self.switch_frame('Request Robot')
         elif button_text == 'Pending Requests':
             self.switch_frame('Pending Requests')  
+        elif button_text == 'Feedback':
+            self.switch_frame('Feedback')  
         else:
             self.switch_frame(button_text)
 
