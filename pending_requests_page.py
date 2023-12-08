@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from db import get_requests
+from db import get_requests, update_request_status_to_currently_delivering
 
 class PendingRequestsPage:
     def __init__(self, root, switch_frame):
@@ -74,7 +74,7 @@ class PendingRequestsPage:
         self.right_frame.rowconfigure(1, weight=1)
         
         # submit button
-        submit_button = tk.Button(self.right_frame,  relief='flat', background='#4C4273', foreground='white', width='12', text="Submit", command=lambda text=button_text: self.button_click(text, switch_frame) )
+        submit_button = tk.Button(self.right_frame, relief='flat', background='#4C4273', text="Submit", foreground='white', width='12', command=lambda: self.submit_button(switch_frame))
         submit_button.pack(side='bottom', pady=10)  
 
     def on_select(self, event):
@@ -104,8 +104,14 @@ class PendingRequestsPage:
             switch_frame('Home')
         elif button_text == 'Feedback':
             switch_frame('Feedback')  
-        elif button_text == "Submit": 
-            pass #hier dann die progess bar!
+     
+    def submit_button(self, switch_frame):
+        selected_item = self.tree.selection()
+        if selected_item:            
+            update_request_status_to_currently_delivering(selected_item)   
+            switch_frame("Home")     
+              
+# selected_request = next(request for request in self.all_requests if request.user == selected_values[0] and request.quantity == selected_values[1] and request.location == selected_values[2] and request.status == selected_values[3])
     
     def on_button_hover(self, event):
         event.widget['background'] = '#8c94c6' 
