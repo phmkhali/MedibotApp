@@ -7,6 +7,7 @@ class FeedbackPage:
         self.mainframe = tk.Frame(self.root, bg='#333333')
         self.mainframe.pack(expand=True, fill='both')
         self.mainframe.columnconfigure(0, weight=1)
+        self.current_page = 'Feedback'
 
         # Navigation Bar-------------------------------------------------------------------------- 
         navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
@@ -30,12 +31,32 @@ class FeedbackPage:
                 button['background'] = '#a0a9de'
 
         # Page Content-------------------------------------------------------------------------- 
-        home_label = ttk.Label(self.mainframe, text='Feedback', background='#333333', foreground='white', font=("Microsoft YaHei UI Light", 14))
-        home_label.pack(pady=20)
+        self.left_frame = tk.Frame(self.mainframe, width=350, height=400, background='#333333') 
+        self.left_frame.pack(fill='both', side='left', pady=60, padx=(60,0))
+        
+        self.right_frame = tk.Frame(self.mainframe)
 
-        placeholder_label = ttk.Label(self.mainframe, text='Welcome to Medibot. This is the home page.', background='#333333', foreground='white', font=("Microsoft YaHei UI Light", 12))
-        placeholder_label.pack(pady=20)
+        select_title_label = tk.Label(self.left_frame, text="Order Summary", background='#333333', foreground='white')
+        select_title_label.config(font=("TkDefaultFont", 12, "bold"))
+        select_title_label.grid(row=0,column=0,padx=10, pady=10, sticky='w')
 
+        medication_label = tk.Label(self.left_frame, text="Medication", background='#333333', foreground='white')
+        medication_label.grid(row=1,column=0,padx=10, pady=(5,0), sticky='w')
+        
+        quantity_label = tk.Label(self.left_frame, text="Quantity", background='#333333', foreground='white')
+        quantity_label.grid(row=2,column=0,padx=10, pady=(5,0), sticky='w')
+        
+        location_label = tk.Label(self.left_frame, text="Location", background='#333333', foreground='white')
+        location_label.grid(row=3,column=0,padx=10, pady=(5,0), sticky='w')
+        
+        patient_label = tk.Label(self.left_frame, text="Patient", background='#333333', foreground='white')
+        patient_label.grid(row=4,column=0,padx=10, pady=(5,0), sticky='w')
+        
+        status_label = tk.Label(self.left_frame, text="Status: currently delivering..", background='#333333', foreground='white')
+        status_label.grid(row=4,column=0,padx=10, pady=30, sticky='w')
+
+
+       
     # Methods -------------------------------------------------------------------------- 
     def button_click(self, button_text, switch_frame):
             if button_text == 'Request Robot':
