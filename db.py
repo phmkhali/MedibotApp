@@ -71,7 +71,20 @@ def get_medication_db():
 
 # create request from request_robot_page
 def create_request(location, medName, quantity, patientName):
-    db.collection('request').add({'location':location, 'medName':medName, 'quantity':quantity, 'patientName':patientName, 'user':current_user, 'status':'requested'})
+    
+    new_request_ref = db.collection('request').add({
+        'location': location,
+        'medName': medName,
+        'quantity': quantity,
+        'patientName': patientName,
+        'user': current_user,
+        'status': 'requested'
+    })
+    
+    # get doc_id from firebase
+    document_id = new_request_ref[1].id
+    new_request_ref[1].update({'fire_id': document_id})
+
     
 def clear_requests():
     try:
@@ -104,7 +117,8 @@ def get_requests():
             quantity=request_data.get("quantity"),
             patientName=request_data.get("patientName"),
             user=request_data.get("user"),
-            status=request_data.get("status")
+            status=request_data.get("status"),
+            fire_id=request_data.get("fire_id")
         )
 
         requests_List.append(request_instance)

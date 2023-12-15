@@ -7,7 +7,6 @@ class Request:
         self.user = user
         self.status = status
         self.fire_id = fire_id
- 
 
     def set_status_processing(self):
         self.status = "processing"
