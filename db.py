@@ -103,6 +103,20 @@ def update_request_status_to_currently_delivering(request):
     request_ref = db.collection("request").document(request.fire_id)
     request.status = "currently delivering"
     request_ref.update({ "status": "currently delivering" })
+
+def update_request_status_to_failed(request):
+    request_ref = db.collection("request").document(request.fire_id)
+    request.status = "failed"
+    request_ref.update({ "status": "failed" })    
+    
+def add_feedback(request, medibot_arrived, medication_arrived, information_text):
+    sammlung_referenz = db.collection("feedback").add({
+        'request_id':request.fire_id,
+        'medibot_arrived':medibot_arrived,
+        'medication_arrived':medication_arrived,
+        'information_text':information_text
+    })
+    update_request_status_to_failed(request)
     
 
 # get request from db
