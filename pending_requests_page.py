@@ -107,9 +107,11 @@ class PendingRequestsPage:
      
     def submit_button(self, switch_frame):
         selected_item = self.tree.selection()
-        if selected_item:            
-            update_request_status_to_currently_delivering(selected_item)   
-            switch_frame("Home")     
+        if selected_item and len(selected_item[0]) >= 6:  # Check the length of selected_item
+            print(selected_item)
+            update_request_status_to_currently_delivering(selected_item[0][5])
+            switch_frame("Home")
+
               
 # selected_request = next(request for request in self.all_requests if request.user == selected_values[0] and request.quantity == selected_values[1] and request.location == selected_values[2] and request.status == selected_values[3])
     
@@ -154,4 +156,4 @@ class PendingRequestsPage:
             self.tree.delete(item)
 
         for request in requests_with_requested_status:
-            self.tree.insert("", tk.END, values=(request.med_name, request.quantity, request.location, request.patientName, request.user))
+            self.tree.insert("", tk.END, values=(request.med_name, request.quantity, request.location, request.patientName, request.user, request.fire_id))
