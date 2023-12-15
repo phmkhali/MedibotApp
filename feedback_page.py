@@ -38,37 +38,8 @@ class FeedbackPage:
         self.left_frame = tk.Frame(self.mainframe, width=350, height=400, background='#333333')
         self.right_frame = tk.Frame(self.mainframe)
 
+        self.update_feedback()
         
-        # fill labels
-        requests_for_current_user = get_request_for_current_user() 
-        
-        if requests_for_current_user:
-            self.left_frame.pack(fill='both', side='left', pady=60, padx=(60,0))
-        else:
-            empty_label = tk.Label(self.mainframe, text="None of your orders currently delivering.", background='#333333', foreground='white')
-            empty_label.pack(pady=30)
-            
-        select_title_label = tk.Label(self.left_frame, text="Order Summary", background='#333333', foreground='white')
-        select_title_label.config(font=("TkDefaultFont", 12, "bold"))
-        select_title_label.grid(row=0,column=0,padx=10, pady=10, sticky='w')
-        
-        medication_label = tk.Label(self.left_frame, text="Medication", background='#333333', foreground='white')
-        medication_label.grid(row=1,column=0,padx=10, pady=(5,0), sticky='w')
-        
-        quantity_label = tk.Label(self.left_frame, text="Quantity", background='#333333', foreground='white')
-        quantity_label.grid(row=2,column=0,padx=10, pady=(5,0), sticky='w')
-        
-        location_label = tk.Label(self.left_frame, text="Location", background='#333333', foreground='white')
-        location_label.grid(row=3,column=0,padx=10, pady=(5,0), sticky='w')
-        
-        patient_label = tk.Label(self.left_frame, text="Patient", background='#333333', foreground='white')
-        patient_label.grid(row=4,column=0,padx=10, pady=(5,0), sticky='w')
-        
-        status_label = tk.Label(self.left_frame, text="Status: currently delivering..", background='#333333', foreground='white')
-        status_label.grid(row=4,column=0,padx=10, pady=30, sticky='w')
-
-
-       
     # Methods -------------------------------------------------------------------------- 
     def button_click(self, button_text, switch_frame):
             if button_text == 'Request Robot':
@@ -88,16 +59,46 @@ class FeedbackPage:
     def on_button_leave(self, event):
         event.widget['background'] = '#a0a9de' 
 
+
     def update_feedback(self):
-        #Hier dann das update
-        requests_for_current_user = get_request_for_current_user() 
+        # Get requests for the current user
+        requests_for_current_user = get_request_for_current_user()
+
+        # Remove the existing left frame content
+        for widget in self.left_frame.winfo_children():
+            widget.destroy()
+
         if requests_for_current_user:
-            self.left_frame.pack(fill='both', side='left', pady=60, padx=(60,0))
+            self.left_frame.pack(fill='both', side='left', pady=60, padx=(60, 0))
+
+            # Populate the left frame with order information
+            select_title_label = tk.Label(self.left_frame, text="Order Summary", background='#333333', foreground='white')
+            select_title_label.config(font=("TkDefaultFont", 12, "bold"))
+            select_title_label.grid(row=0, column=0, padx=10, pady=10, sticky='w')
+            
+            medication_label = tk.Label(self.left_frame, text="Medication", background='#333333', foreground='white')
+            medication_label.grid(row=1,column=0,padx=10, pady=(5,0), sticky='w')
+            
+            quantity_label = tk.Label(self.left_frame, text="Quantity", background='#333333', foreground='white')
+            quantity_label.grid(row=2,column=0,padx=10, pady=(5,0), sticky='w')
+            
+            location_label = tk.Label(self.left_frame, text="Location", background='#333333', foreground='white')
+            location_label.grid(row=3,column=0,padx=10, pady=(5,0), sticky='w')
+            
+            patient_label = tk.Label(self.left_frame, text="Patient", background='#333333', foreground='white')
+            patient_label.grid(row=4,column=0,padx=10, pady=(5,0), sticky='w')
+            
+            status_label = tk.Label(self.left_frame, text="Status: currently delivering..", background='#333333', foreground='white')
+            status_label.grid(row=4,column=0,padx=10, pady=30, sticky='w')
+
+        # if no requests are being worked on
         else:
-            empty_label = tk.Label(self.mainframe, text="None of your orders currently delivering.", background='#333333', foreground='white')
-            empty_label.pack(pady=30)
-        self.root.after(5000, self.update_feedback)    
-    
+            empty_label = tk.Label(self.left_frame, text="None of your orders are currently delivering.", background='#333333', foreground='white')
+            empty_label.grid(row=0, column=0, padx=10, pady=10, sticky='w')
+
+        # next update after 5 seconds
+        self.root.after(5000, self.update_feedback)
+        
     # show currently processed order
 def get_request_for_current_user():
     current_user = get_current_user_email()
