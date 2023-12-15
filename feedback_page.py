@@ -100,7 +100,7 @@ class FeedbackPage:
         self.root.after(5000, self.update_feedback)
 
             
-        def update_labels(self, request):
+def update_labels(self, request):
             self.medication_label["text"] = f"{request.med_name}"
             self.quantity_label["text"] = f"{request.quantity}"
             self.location_label["text"] = f"{request.location}"
