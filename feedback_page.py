@@ -62,48 +62,57 @@ class FeedbackPage:
 
     def update_feedback(self):
         # Get requests for the current user
-        requests_for_current_user = get_request_for_current_user()
+        active_requests = get_request_for_current_user()
 
         # Remove the existing left frame content
         for widget in self.left_frame.winfo_children():
             widget.destroy()
 
-        if requests_for_current_user:
-            self.left_frame.pack(fill='both', side='left', pady=60, padx=(60, 0))
+        # Create the widgets outside the if condition
+        self.select_title_label = tk.Label(self.left_frame, text="Order Summary", background='#333333', foreground='white')
+        self.select_title_label.config(font=("TkDefaultFont", 12, "bold"))
+        
+        self.medication_label = tk.Label(self.left_frame, text="Medication", background='#333333', foreground='white')
+        self.quantity_label = tk.Label(self.left_frame, text="Quantity", background='#333333', foreground='white')
+        self.location_label = tk.Label(self.left_frame, text="Location", background='#333333', foreground='white')
+        self.patient_label = tk.Label(self.left_frame, text="Patient", background='#333333', foreground='white')
+        self.status_label = tk.Label(self.left_frame, text="Status: currently delivering..", background='#333333', foreground='white')
 
-            # Populate the left frame with order information
-            select_title_label = tk.Label(self.left_frame, text="Order Summary", background='#333333', foreground='white')
-            select_title_label.config(font=("TkDefaultFont", 12, "bold"))
-            select_title_label.grid(row=0, column=0, padx=10, pady=10, sticky='w')
+        if active_requests:
+            # populate the left frame with current_order
+            self.select_title_label.grid(row=0, column=0, padx=10, pady=10, sticky='w')
+            self.medication_label.grid(row=1,column=0,padx=10, pady=(5,0), sticky='w')
+            self.quantity_label.grid(row=2,column=0,padx=10, pady=(5,0), sticky='w')
+            self.location_label.grid(row=3,column=0,padx=10, pady=(5,0), sticky='w')
+            self.patient_label.grid(row=4,column=0,padx=10, pady=(5,0), sticky='w')
+            self.status_label.grid(row=4,column=0,padx=10, pady=30, sticky='w')
             
-            medication_label = tk.Label(self.left_frame, text="Medication", background='#333333', foreground='white')
-            medication_label.grid(row=1,column=0,padx=10, pady=(5,0), sticky='w')
-            
-            quantity_label = tk.Label(self.left_frame, text="Quantity", background='#333333', foreground='white')
-            quantity_label.grid(row=2,column=0,padx=10, pady=(5,0), sticky='w')
-            
-            location_label = tk.Label(self.left_frame, text="Location", background='#333333', foreground='white')
-            location_label.grid(row=3,column=0,padx=10, pady=(5,0), sticky='w')
-            
-            patient_label = tk.Label(self.left_frame, text="Patient", background='#333333', foreground='white')
-            patient_label.grid(row=4,column=0,padx=10, pady=(5,0), sticky='w')
-            
-            status_label = tk.Label(self.left_frame, text="Status: currently delivering..", background='#333333', foreground='white')
-            status_label.grid(row=4,column=0,padx=10, pady=30, sticky='w')
+            update_labels(self,active_requests[0])
 
         # if no requests are being worked on
         else:
             empty_label = tk.Label(self.left_frame, text="None of your orders are currently delivering.", background='#333333', foreground='white')
             empty_label.grid(row=0, column=0, padx=10, pady=10, sticky='w')
+                        
+        self.left_frame.pack(fill='both', side='left', pady=60, padx=(60, 0))
 
         # next update after 5 seconds
         self.root.after(5000, self.update_feedback)
-        
-    # show currently processed order
+
+            
+        def update_labels(self, request):
+            self.medication_label["text"] = f"{request.med_name}"
+            self.quantity_label["text"] = f"{request.quantity}"
+            self.location_label["text"] = f"{request.location}"
+            self.patient_label["text"] = f"{request.patientName}"
+                
+            # show currently processed order
+    
 def get_request_for_current_user():
     current_user = get_current_user_email()
     user_requests_delivering = get_requests_with_status_delivering(current_user)
     return user_requests_delivering
+
             
 
     
