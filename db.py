@@ -98,15 +98,18 @@ def clear_requests():
     except FirebaseError as e:
         print('Error clearing database:', e)
 
-def update_request_status_to_currently_delivering(request_fire_id):
-    request_ref = db.collection("request").document(request_fire_id)
+# update request status after submitting in pending_request
+def update_request_status_to_currently_delivering(request):
+    request_ref = db.collection("request").document(request.fire_id)
+    request.status = "currently delivering"
     request_ref.update({ "status": "currently delivering" })
     
 
 # get request from db
 def get_requests():
     requests = db.collection("request").get()
-    requests_List = []
+    requests_list = []
+    requests_list.clear()
 
     for request_doc in requests:
         request_data = request_doc.to_dict()
@@ -121,9 +124,9 @@ def get_requests():
             fire_id=request_data.get("fire_id")
         )
 
-        requests_List.append(request_instance)
+        requests_list.append(request_instance)
 
-    return requests_List
+    return requests_list
 
 # generate feedback for delivering request
 def get_requests_with_status_delivering(current_user):

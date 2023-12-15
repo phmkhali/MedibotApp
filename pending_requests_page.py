@@ -106,12 +106,16 @@ class PendingRequestsPage:
             switch_frame('Feedback')  
      
     def submit_button(self, switch_frame):
-        selected_item = self.tree.selection()
-        if selected_item and len(selected_item[0]) >= 6:  # Check the length of selected_item
-            print(selected_item)
-            update_request_status_to_currently_delivering(selected_item[0][5])
-            switch_frame("Home")
-
+        selection = self.tree.selection() 
+        selected_item = None
+        if selection:
+            selected_item = self.tree.item(selection[0], 'values')
+            
+            all_requests = get_requests()
+            corresponding_request_list = [request for request in all_requests if request.fire_id == selected_item[-1]]
+            corresponding_request = corresponding_request_list[0]
+            update_request_status_to_currently_delivering(corresponding_request)
+            switch_frame("Feedback")
               
 # selected_request = next(request for request in self.all_requests if request.user == selected_values[0] and request.quantity == selected_values[1] and request.location == selected_values[2] and request.status == selected_values[3])
     
@@ -155,5 +159,6 @@ class PendingRequestsPage:
         for item in self.tree.get_children():
             self.tree.delete(item)
 
+        # insert requests with 'requested'
         for request in requests_with_requested_status:
             self.tree.insert("", tk.END, values=(request.med_name, request.quantity, request.location, request.patientName, request.user, request.fire_id))
