@@ -10,6 +10,9 @@ class FeedbackPage:
         self.mainframe.columnconfigure(0, weight=1)
         self.current_page = 'Feedback'
 
+        # update every 5 seconds
+        self.root.after(5000, self.update_feedback)
+
         # Navigation Bar-------------------------------------------------------------------------- 
         navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
         navbar_frame.pack(fill='x')
@@ -84,6 +87,16 @@ class FeedbackPage:
 
     def on_button_leave(self, event):
         event.widget['background'] = '#a0a9de' 
+
+    def update_feedback(self):
+        #Hier dann das update
+        requests_for_current_user = get_request_for_current_user() 
+        if requests_for_current_user:
+            self.left_frame.pack(fill='both', side='left', pady=60, padx=(60,0))
+        else:
+            empty_label = tk.Label(self.mainframe, text="None of your orders currently delivering.", background='#333333', foreground='white')
+            empty_label.pack(pady=30)
+        self.root.after(5000, self.update_feedback)    
     
     # show currently processed order
 def get_request_for_current_user():
