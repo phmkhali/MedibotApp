@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import PhotoImage
 from db import sign_out
+from PIL import ImageTk, Image  
 
 class HomePage:
     def __init__(self, root, switch_frame):
@@ -62,9 +62,11 @@ class HomePage:
         logout_button.grid(row=0, column=0, pady=20, sticky='ne')
 
         # Map
-        image = PhotoImage(file="example_map.png")
-        image_label = tk.Label(right_frame, image=image)
-        image_label.grid(pady=20, row=1, column=0)
+        map_image_path = 'map.pgm'  
+        self.map_image = ImageTk.PhotoImage(Image.open(map_image_path))
+        map_label = tk.Label(right_frame, image=self.map_image, background='#333333')
+        map_label.grid(row=1, column=0, pady=20, sticky='nsew')
+
 
     def update_status(self, status):
         if status == 'connected':

@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import PhotoImage
+from PIL import ImageTk, Image  
 from tkinter import messagebox
 from db import get_medication_db
 from db import get_current_user_email
@@ -40,8 +40,9 @@ class RequestRobotPage:
         left_frame = tk.Frame(self.mainframe, width=300, background='#333333')
         left_frame.pack(side='left', pady=20, padx=(60,30), anchor='center')
 
-        right_frame = tk.Frame(self.mainframe, width=400)
-        right_frame.pack(fill='both', side='right', pady=20, padx=30)
+        right_frame = tk.Frame(self.mainframe, background='#333333', width=400)
+        right_frame.pack(fill='both', expand=True, side='right', pady=40, padx=40)
+        right_frame.grid_columnconfigure(0, weight=1)
 
         select_destination_label = tk.Label(left_frame, text="Select Destination", background='#333333', foreground='white')
         select_destination_label.grid(row=0,column=0,padx=10, pady=5, sticky='w')
@@ -76,10 +77,11 @@ class RequestRobotPage:
         confirm_button = tk.Button(left_frame, text="Confirm", background='#4C4273', relief='flat', foreground='white', command=self.show_messagebox, width=15)
         confirm_button.grid(row=8,column=0,padx=10, pady=20, sticky='w')
 
-        #map
-        image = PhotoImage(file="example_map.png")
-        image_label = tk.Label(right_frame, image=image)
-        image_label.pack(pady=20, anchor='center', expand=True)
+        # Map
+        map_image_path = 'map.pgm'  
+        self.map_image = ImageTk.PhotoImage(Image.open(map_image_path))
+        map_label = tk.Label(right_frame, image=self.map_image, background='#333333')
+        map_label.grid(row=1, column=0, pady=20, sticky='nsew')
 
     def button_click(self, button_text, switch_frame):
         if button_text == 'Request Robot':
