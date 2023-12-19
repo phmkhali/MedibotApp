@@ -149,6 +149,12 @@ def get_requests_with_status_delivering(current_user):
     requests_with_currently_delivering_status = [request for request in all_requests if request.status == "currently delivering" and request.user == current_user]
     return requests_with_currently_delivering_status
 
+def get_requests_with_status_delivered(current_user):
+    all_requests = get_requests()
+    
+    requests_with_delivered_status = [request for request in all_requests if request.status == "delivered" and request.user == current_user]
+    return requests_with_delivered_status
+
 #create_user(email="smith@doctor.hos", password="123456")
 #create_user(email="jones@doctor.hos", password="123456")
 #create_user(email="holdt@interim.hos", password="qwert123")
