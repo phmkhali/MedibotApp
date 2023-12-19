@@ -62,7 +62,8 @@ class FeedbackPage:
 
     def update_feedback(self):
         # Get requests for the current user
-        active_requests = get_request_for_current_user()
+        active_requests = get_request_delivering_for_current_user()
+        finished_requests = get_request_delivered_for_current_user()
 
         # Remove the existing left frame content
         for widget in self.left_frame.winfo_children():
@@ -78,16 +79,26 @@ class FeedbackPage:
         self.patient_label = tk.Label(self.left_frame, text="Patient", background='#333333', foreground='white')
         self.status_label = tk.Label(self.left_frame, text="Status: currently delivering..", background='#333333', foreground='white')
 
-        if active_requests:
+        self.order_received_button = tk.Button(self.left_frame, text="Order received", background='#4C4273', relief='flat', foreground='white', width=15)
+        self.order_missing_button = tk.Button(self.left_frame, text="Order missing", background='#E83C3C', relief='flat', foreground='white', width=15)
+
+
+        if active_requests or finished_requests:
             # populate the left frame with current_order
             self.select_title_label.grid(row=0, column=0, padx=10, pady=10, sticky='w')
             self.medication_label.grid(row=1,column=0,padx=10, pady=(5,0), sticky='w')
             self.quantity_label.grid(row=2,column=0,padx=10, pady=(5,0), sticky='w')
             self.location_label.grid(row=3,column=0,padx=10, pady=(5,0), sticky='w')
             self.patient_label.grid(row=4,column=0,padx=10, pady=(5,0), sticky='w')
-            self.status_label.grid(row=4,column=0,padx=10, pady=30, sticky='w')
+            self.status_label.grid(row=5,column=0,padx=10, pady=30, sticky='w')
             
             update_labels(self,active_requests[0])
+
+            if finished_requests:
+                self.order_received_button.grid(row=6,column=0,padx=10, pady=(5,0), sticky='w')
+                self.order_missing_button.grid(row=7,column=0,padx=10, pady=30, sticky='w')
+                self.status_label.config(text='delivered')
+                 
 
         # if no requests are being worked on
         else:
@@ -108,10 +119,15 @@ def update_labels(self, request):
                 
             # show currently processed order
     
-def get_request_for_current_user():
+def get_request_delivering_for_current_user():
     current_user = get_current_user_email()
     user_requests_delivering = get_requests_with_status_delivering(current_user)
     return user_requests_delivering
+
+def get_request_delivered_for_current_user():
+    current_user = get_current_user_email()
+    user_requests_delivered = get_requests_with_status_delivering(current_user)
+    return user_requests_delivered
 
             
 
