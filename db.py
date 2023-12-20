@@ -104,6 +104,11 @@ def update_request_status_to_currently_delivering(request):
     request.status = "currently delivering"
     request_ref.update({ "status": "currently delivering" })
 
+def update_request_status_to_delivered(request):
+    request_ref = db.collection("request").document(request.fire_id)
+    request.status = "delivered"
+    request_ref.update({ "status": "delivered" })
+
 def update_request_status_to_failed(request):
     request_ref = db.collection("request").document(request.fire_id)
     request.status = "failed"
