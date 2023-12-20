@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from db import get_requests_with_status_delivering, get_requests_with_status_delivered, get_current_user_email, update_request_status_to_delivered
+from tkinter import messagebox
 
 class FeedbackPage:
     def __init__(self, root, switch_frame):
@@ -8,6 +9,7 @@ class FeedbackPage:
         self.mainframe = tk.Frame(self.root, bg='#333333')
         self.mainframe.pack(expand=True, fill='both')
         self.mainframe.columnconfigure(0, weight=1)
+        self.switch_frame = switch_frame
         self.current_page = 'Feedback'
 
         # update every 5 seconds
@@ -41,25 +43,7 @@ class FeedbackPage:
         self.update_feedback()
         
     # Methods -------------------------------------------------------------------------- 
-    def button_click(self, button_text, switch_frame):
-            if button_text == 'Request Robot':
-                switch_frame('Request Robot')
-            elif button_text == 'Home':
-                switch_frame('Home')
-            elif button_text == 'Pending Requests':
-                switch_frame('Pending Requests')     
-            elif button_text == 'Feedback':
-                switch_frame('Feedback')   
-            elif button_text == "Confirm":
-                pass
         
-    def on_button_hover(self, event):
-        event.widget['background'] = '#8c94c6' 
-
-    def on_button_leave(self, event):
-        event.widget['background'] = '#a0a9de' 
-
-
     def update_feedback(self):
         # Get requests for the current user
         active_requests = get_request_delivering_for_current_user()
@@ -84,7 +68,7 @@ class FeedbackPage:
         self.patient_label = tk.Label(self.left_frame, text="Patient", background='#333333', foreground='white')
         self.status_label = tk.Label(self.left_frame, text="Status: currently delivering..", background='#333333', foreground='white')
 
-        self.order_received_button = tk.Button(self.left_frame, text="Order received", background='#4C4273', relief='flat', foreground='white', width=15)
+        self.order_received_button = tk.Button(self.left_frame, text="Order received", background='#4C4273', relief='flat', foreground='white', width=15, command=lambda: self.show_messagebox())
         self.order_missing_button = tk.Button(self.left_frame, text="Order missing", background='#E83C3C', relief='flat', foreground='white', width=15)
 
         if active_requests:
@@ -123,27 +107,51 @@ class FeedbackPage:
         # next update after 5 seconds
         self.root.after(5000, self.update_feedback)
 
-def test(self, request):
-     update_request_status_to_delivered(request)
+    def button_click(button_text, switch_frame):
+                if button_text == 'Request Robot':
+                    switch_frame('Request Robot')
+                elif button_text == 'Home':
+                    switch_frame('Home')
+                elif button_text == 'Pending Requests':
+                    switch_frame('Pending Requests')     
+                elif button_text == 'Feedback':
+                    switch_frame('Feedback')   
+                elif button_text == "Confirm":
+                    pass
             
-def update_labels(self, request):
-            self.medication_label["text"] = f"{request.med_name}"
-            self.quantity_label["text"] = f"{request.quantity}"
-            self.location_label["text"] = f"{request.location}"
-            self.patient_label["text"] = f"{request.patientName}"
-                
-            # show currently processed order
-    
+    def on_button_hover(self, event):
+            event.widget['background'] = '#8c94c6' 
+
+    def on_button_leave(self, event):
+            event.widget['background'] = '#a0a9de' 
+
+    def show_messagebox(self):
+        self.switch_frame("Home")   
+        messagebox.showinfo("Confirmation", "Order delivered successfully.")
+
+
+def test(self, request):
+        update_request_status_to_delivered(request)
+
 def get_request_delivering_for_current_user():
-    current_user = get_current_user_email()
-    user_requests_delivering = get_requests_with_status_delivering(current_user)
-    return user_requests_delivering
+        current_user = get_current_user_email()
+        user_requests_delivering = get_requests_with_status_delivering(current_user)
+        return user_requests_delivering
 
 def get_request_delivered_for_current_user():
-    current_user = get_current_user_email()
-    user_requests_delivered = get_requests_with_status_delivered(current_user)
-    return user_requests_delivered
+        current_user = get_current_user_email()
+        user_requests_delivered = get_requests_with_status_delivered(current_user)
+        return user_requests_delivered
 
-            
+                
+def update_labels(self, request):
+                self.medication_label["text"] = f"{request.med_name}"
+                self.quantity_label["text"] = f"{request.quantity}"
+                self.location_label["text"] = f"{request.location}"
+                self.patient_label["text"] = f"{request.patientName}"
+                    
+                # show currently processed order
 
-    
+
+
+        
