@@ -107,7 +107,7 @@ class FeedbackPage:
         # next update after 5 seconds
         self.root.after(5000, self.update_feedback)
 
-    def button_click(button_text, switch_frame):
+    def button_click(self,button_text, switch_frame):
                 if button_text == 'Request Robot':
                     switch_frame('Request Robot')
                 elif button_text == 'Home':
