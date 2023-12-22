@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from db import get_requests_with_status_delivering, get_requests_with_status_delivered, get_current_user_email, update_request_status_to_delivered
+from db import get_requests_with_status_delivering, get_requests_with_status_delivered, get_current_user_email, update_request_status_to_delivered, add_feedback
 from tkinter import messagebox
 
 class FeedbackPage:
@@ -58,7 +58,7 @@ class FeedbackPage:
     def update_feedback(self):
         # Get requests for the current user
         active_requests = get_request_delivering_for_current_user()
-        finished_requests = get_request_delivered_for_current_user()
+        self.finished_requests = get_request_delivered_for_current_user()
 
         # Remove the existing left frame content
         for widget in self.left_frame.winfo_children():
@@ -94,7 +94,7 @@ class FeedbackPage:
             update_labels(self,active_requests[0])
 
                  
-        elif finished_requests:
+        elif self.finished_requests:
             self.select_title_label.grid(row=0, column=0, padx=10, pady=10, sticky='w')
             self.medication_label.grid(row=1,column=0,padx=10, pady=(5,0), sticky='w')
             self.quantity_label.grid(row=2,column=0,padx=10, pady=(5,0), sticky='w')
@@ -106,7 +106,7 @@ class FeedbackPage:
             self.order_missing_button.grid(row=7,column=0,padx=10, pady=(5,0), sticky='w')
             self.status_label.config(text='Status: delivered')
 
-            update_labels(self,finished_requests[0])
+            update_labels(self,self.finished_requests[0])
 
         # if no requests are being worked on
         else:
@@ -159,8 +159,8 @@ class FeedbackPage:
                                      foreground='white')
         information_label.grid(row=4, column=0, padx=10, pady=(5, 0), sticky='w')
 
-        more_information_entry = tk.Entry(self.right_frame)
-        more_information_entry.grid(row=5, column=0, padx=10, pady=(5, 0), sticky='w')
+        self.more_information_entry = tk.Entry(self.right_frame)
+        self.more_information_entry.grid(row=5, column=0, padx=10, pady=(5, 0), sticky='w')
 
         send_feedback_button = tk.Button(self.right_frame, relief='flat', background='#4C4273', text="Send Feedback",
                                          foreground='white', width='12', command=lambda: self.send_feedback_button())
@@ -191,9 +191,10 @@ class FeedbackPage:
         print("Ausgewählte Option:", selected_option)
 
         
-    def send_feedback_button(self, switch_frame):
+    def send_feedback_button(self):
         entered_text = self.more_information_entry.get()
-        add_feedback(self.current_request, self.var.get(), self.var2.get(), entered_text)
+        add_feedback(self.finished_requests[0], self.var.get(), self.var2.get(), entered_text)
+        #success box
 
        
 
