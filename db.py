@@ -16,9 +16,9 @@ def sign_in(email, password):
     global current_user # global variable
     try:
         user = auth.get_user_by_email(email)
-        print('Successfully signed in as:', user.uid)
+        print('Successfully signed in as:', user['uid'])
         current_user = email
-        return user.uid
+        return user['uid']
     #except auth.AuthError as e:
     except FirebaseError as e:
        # print('Error signing in':, e)

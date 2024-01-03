@@ -21,12 +21,12 @@ class TestLoginPageIntegration(unittest.TestCase):
         login_page.check_credentials(switch_frame=lambda x: self.assertEqual(x, "Home"))
 
         # Assert that the mock_get_user_by_email was called with the correct arguments
-        mock_get_user_by_email.assert_called_once_with(email='holdt@interim.hos')
+        mock_get_user_by_email.assert_called_once_with('holdt@interim.hos')
 
     @patch('db.auth.get_user_by_email')
     def test_check_credentials_failed_login(self, mock_get_user_by_email):
         # Mock the get_user_by_email function to simulate a failed login
-        mock_get_user_by_email.side_effect = auth.AuthError("Error message")
+        mock_get_user_by_email.side_effect = auth.EmailNotFoundError("Email not found")
 
         # Create an instance of LoginPage
         login_page = LoginPage(root=None, switch_frame=lambda x: None)
@@ -38,7 +38,7 @@ class TestLoginPageIntegration(unittest.TestCase):
         login_page.check_credentials(switch_frame=lambda x: self.fail("Switch_frame should not be called"))
 
         # Assert that the mock_get_user_by_email was called with the correct arguments
-        mock_get_user_by_email.assert_called_once_with(email='invalid_user@interim.hos')
+        mock_get_user_by_email.assert_called_once_with('invalid_user@interim.hos')
 
 if __name__ == '__main__':
     unittest.main()
