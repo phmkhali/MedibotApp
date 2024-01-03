@@ -16,9 +16,9 @@ def sign_in(email, password):
     global current_user # global variable
     try:
         user = auth.get_user_by_email(email)
-        print('Successfully signed in as:', user.uid)
+        print('Successfully signed in as:', user['uid'])
         current_user = email
-        return user.uid
+        return user['uid']
     #except auth.AuthError as e:
     except FirebaseError as e:
        # print('Error signing in':, e)
@@ -37,6 +37,15 @@ def create_user(email, password):
     except FirebaseError as e:
         print('Error creating user:', e)
         return None
+    
+def delete_user(email):
+    try:
+        user = auth.get_user_by_email(email)
+        auth.delete_user(user.uid)
+        print(f"User {email} successfully deleted.")
+    except FirebaseError as e:
+        print(f"Error deleting user {email}: {e}")
+        
     
 def get_current_user_email():
     return current_user
