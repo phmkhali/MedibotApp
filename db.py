@@ -38,6 +38,15 @@ def create_user(email, password):
         print('Error creating user:', e)
         return None
     
+def delete_user(email):
+    try:
+        user = auth.get_user_by_email(email)
+        auth.delete_user(user.uid)
+        print(f"User {email} successfully deleted.")
+    except FirebaseError as e:
+        print(f"Error deleting user {email}: {e}")
+        
+    
 def get_current_user_email():
     return current_user
 

@@ -5,7 +5,7 @@ from db import create_user, sign_in
 
 class LoginPage:
     def __init__(self, root, switch_frame):
-
+        
         self.mainframe = tk.Frame(root, bg='#333333')
         self.mainframe.pack(expand=True)
 
