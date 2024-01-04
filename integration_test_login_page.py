@@ -26,8 +26,7 @@ class TestLoginPageIntegration(unittest.TestCase):
     @patch('db.auth.get_user_by_email')
     def test_check_credentials_failed_login(self, mock_get_user_by_email):
         # Mock the get_user_by_email function to simulate a failed login
-        mock_get_user_by_email.side_effect = auth.AuthError("Error message")
-
+        mock_get_user_by_email.side_effect = auth.EmailNotFoundError("Email not found")
         # Create an instance of LoginPage
         login_page = LoginPage(root=None, switch_frame=lambda x: None)
 
