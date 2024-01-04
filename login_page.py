@@ -40,6 +40,7 @@ class LoginPage:
             messagebox.showerror("Login Error", "Invalid username or password")
         else:
             user_id = sign_in(email = username, password = password)
+            #print("User UID:", user_id)
             if user_id:
                 switch_frame("Home")
             else:
