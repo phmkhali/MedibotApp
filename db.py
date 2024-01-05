@@ -115,7 +115,7 @@ def update_request_status_to_failed(request):
     request_ref.update({ "status": "failed" })    
     
 def add_feedback(request, medibot_arrived, medication_arrived, information_text):
-    sammlung_referenz = db.collection("feedback").add({
+    collection_referenz = db.collection("feedback").add({
         'request_id':request.fire_id,
         'medibot_arrived':medibot_arrived,
         'medication_arrived':medication_arrived,
