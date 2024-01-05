@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from db import get_requests_with_status_delivering, get_requests_with_status_delivered, get_current_user_email, update_request_status_to_delivered, add_feedback
 from tkinter import messagebox
+from websocket_methods import move_to_goal
 
 class FeedbackPage:
     def __init__(self, root, switch_frame):
@@ -49,7 +50,8 @@ class FeedbackPage:
     def on_button_leave(self, event):
         event.widget['background'] = '#a0a9de' 
 
-    def show_messagebox(self):
+    def confirm_delivery_and_send_back(self):
+        move_to_goal("Lager")
         self.switch_frame("Home")   
         messagebox.showinfo("Confirmation", "Order delivered successfully.")
    
@@ -77,7 +79,7 @@ class FeedbackPage:
         self.patient_label = tk.Label(self.left_frame, text="Patient", background='#333333', foreground='white')
         self.status_label = tk.Label(self.left_frame, text="Status: currently delivering..", background='#333333', foreground='white')
 
-        self.order_received_button = tk.Button(self.left_frame, text="Order received", background='#4C4273', relief='flat', foreground='white', width=15, command=lambda: self.show_messagebox())
+        self.order_received_button = tk.Button(self.left_frame, text="Order received", background='#4C4273', relief='flat', foreground='white', width=15, command=lambda: self.confirm_delivery_and_send_back())
         self.order_missing_button = tk.Button(self.left_frame, text="Order missing", background='#E83C3C', relief='flat', foreground='white', width=15, command=lambda: self.show_missing_order_content())
 
         if active_requests:
