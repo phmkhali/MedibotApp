@@ -38,7 +38,7 @@ class FeedbackPage:
 
         # Page Content-------------------------------------------------------------------------- 
         self.left_frame = tk.Frame(self.mainframe, width=350, height=400, background='#333333')
-        self.right_frame = tk.Frame(self.mainframe)
+        self.right_frame = tk.Frame(self.mainframe, width=350, height=400, background='#333333')
 
         self.update_feedback()
 
@@ -52,8 +52,6 @@ class FeedbackPage:
     def show_messagebox(self):
         self.switch_frame("Home")   
         messagebox.showinfo("Confirmation", "Order delivered successfully.")
-
-
    
     def update_feedback(self):
         # Get requests for the current user
@@ -127,44 +125,48 @@ class FeedbackPage:
         for widget in self.right_frame.winfo_children():
             widget.destroy()
 
+        # Radiobutton style
+        style = ttk.Style()
+        style.configure('TRadiobutton', background='#333333',foreground='white')
+        
         # Medibot_arrived
         self.var = tk.StringVar()  # Variable for the Radiobutton
         arrived_label = tk.Label(self.right_frame, text="Has the Medibot arrived?", background='#333333',
                                  foreground='white')
         arrived_label.grid(row=0, column=0, padx=10, pady=(5, 0), sticky='w')
 
-        yes_arrived = tk.Radiobutton(self.right_frame, text="Yes", variable=self.var, value="Yes",
+        yes_arrived = ttk.Radiobutton(self.right_frame, text="Yes", variable=self.var, value="Yes", style='TRadiobutton',
                                      command=self.on_radiobutton_click)
         yes_arrived.grid(row=1, column=0, padx=10, pady=(5, 0), sticky='w')
 
-        no_arrived = tk.Radiobutton(self.right_frame, text="No", variable=self.var, value="No",
+        no_arrived = ttk.Radiobutton(self.right_frame, text="No", variable=self.var, value="No", style='TRadiobutton',
                                     command=self.on_radiobutton_click)
         no_arrived.grid(row=1, column=1, padx=10, pady=(5, 0), sticky='w')
 
-        # Medikation_arrived
+        # Medication_arrived
         self.var2 = tk.StringVar()  # Variable for the Radiobutton
         arrived_label = tk.Label(self.right_frame, text="Has all the medication arrived?", background='#333333',
                                  foreground='white')
         arrived_label.grid(row=2, column=0, padx=10, pady=(5, 0), sticky='w')
 
-        yes_arrived = tk.Radiobutton(self.right_frame, text="Yes", variable=self.var2, value="Yes",
+        yes_arrived = ttk.Radiobutton(self.right_frame, text="Yes", variable=self.var2, value="Yes",style='TRadiobutton',
                                      command=self.on_radiobutton_click2)
         yes_arrived.grid(row=3, column=0, padx=10, pady=(5, 0), sticky='w')
 
-        no_arrived = tk.Radiobutton(self.right_frame, text="No", variable=self.var2, value="No",
+        no_arrived = ttk.Radiobutton(self.right_frame, text="No", variable=self.var2, value="No",style='TRadiobutton',
                                     command=self.on_radiobutton_click2)
         no_arrived.grid(row=3, column=1, padx=10, pady=(5, 0), sticky='w')
 
         information_label = tk.Label(self.right_frame, text="Please provide more information:", background='#333333',
                                      foreground='white')
-        information_label.grid(row=4, column=0, padx=10, pady=(5, 0), sticky='w')
+        information_label.grid(row=4, column=0, padx=10, pady=(30, 0), sticky='w')
 
         self.more_information_entry = tk.Entry(self.right_frame)
         self.more_information_entry.grid(row=5, column=0, padx=10, pady=(5, 0), sticky='w')
 
         send_feedback_button = tk.Button(self.right_frame, relief='flat', background='#4C4273', text="Send Feedback",
-                                         foreground='white', width='12', command=lambda: self.send_feedback_button())
-        send_feedback_button.grid(row=6, column=0, padx=10, pady=(5, 0), sticky='w')
+                                         foreground='white', width='15', command=lambda: self.send_feedback_button())
+        send_feedback_button.grid(row=6, column=0, padx=10, pady=(20, 0), sticky='w')
 
         # Pack the right frame into the mainframe
         self.right_frame.pack(fill='both', side='right', pady=60, padx=(0, 60))
@@ -194,7 +196,7 @@ class FeedbackPage:
     def send_feedback_button(self):
         entered_text = self.more_information_entry.get()
         add_feedback(self.finished_requests[0], self.var.get(), self.var2.get(), entered_text)
-        #success box
+        # success box
 
        
 
