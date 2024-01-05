@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from db import get_requests, update_request_status_to_currently_delivering
+from websocket_methods import move_to_goal
 
 class PendingRequestsPage:
     def __init__(self, root, switch_frame):
@@ -115,6 +116,9 @@ class PendingRequestsPage:
             corresponding_request_list = [request for request in all_requests if request.fire_id == selected_item[-1]]
             corresponding_request = corresponding_request_list[0]
             update_request_status_to_currently_delivering(corresponding_request)
+
+            # command robot to start driving
+            move_to_goal(corresponding_request.location)
             switch_frame("Feedback")
               
 # selected_request = next(request for request in self.all_requests if request.user == selected_values[0] and request.quantity == selected_values[1] and request.location == selected_values[2] and request.status == selected_values[3])
