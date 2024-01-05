@@ -14,7 +14,7 @@ class App:
         self.root.title('Medibot')
         self.root.config(bg="#333333")
         self.root.resizable(False, False)
-
+        
         self.frames = {}
         clear_requests()
         self.create_frames()

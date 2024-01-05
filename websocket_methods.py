@@ -1,5 +1,6 @@
 import time as t
 from roslibpy import Ros, Topic, Message, Pose
+from main import get_status
 
 # 1. Verbindung zu TurtleBot
 # Je nachdem welcher Turtlebot ausgewählt ist, soll roslibpy eine Verbindung zu ihm aufbauen
@@ -139,10 +140,15 @@ def update_position(message):
 # 3. Feedback: Signal empfangen, dass der Turtlebot an Zielkoordinate angekommen ist
 # Welchen Status gibt es?
 # 1. "idle" 2. "delivering" 3. "goal reached"
+
+status = ''
 def update_status(message):
+    global status
     status = message['data']
     print(f"Status: {status}")
-
+    
+def get_status():
+    return status
 
 # Wenn eine Nachricht von dem ausgewählten Roboter geschickt wird, wird update_position aufgerufen
 topic_robot_position.subscribe(update_position)

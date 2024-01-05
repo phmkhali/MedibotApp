@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from db import get_requests_with_status_delivering, get_requests_with_status_delivered, get_current_user_email, update_request_status_to_delivered, add_feedback
 from tkinter import messagebox
-from websocket_methods import move_to_goal
+from websocket_methods import move_to_goal, get_status
 
 class FeedbackPage:
     def __init__(self, root, switch_frame):
@@ -59,6 +59,7 @@ class FeedbackPage:
         # Get requests for the current user
         active_requests = get_request_delivering_for_current_user()
         self.finished_requests = get_request_delivered_for_current_user()
+        check_goal_reached()
 
         # Remove the existing left frame content
         for widget in self.left_frame.winfo_children():
@@ -67,8 +68,8 @@ class FeedbackPage:
         # Create the widgets outside the if condition
             
         # manually set status to delivered
-        self.test_button = tk.Button(self.left_frame, text="set status to delivered", background='yellow', relief='flat', foreground='black', width=20, command=lambda: test(self,active_requests[0]))
-        self.test_button.grid(row=0, column=1, padx=10, pady=10, sticky='w')
+       # self.test_button = tk.Button(self.left_frame, text="set status to delivered", background='yellow', relief='flat', foreground='black', width=20, command=lambda: test(self,active_requests[0]))
+       # self.test_button.grid(row=0, column=1, padx=10, pady=10, sticky='w')
 
         self.select_title_label = tk.Label(self.left_frame, text="Order Summary", background='#333333', foreground='white')
         self.select_title_label.config(font=("TkDefaultFont", 12, "bold"))
@@ -116,10 +117,6 @@ class FeedbackPage:
 
         # next update after 5 seconds
         self.root.after(5000, self.update_feedback)
-
-    def show_messagebox(self):
-        messagebox.showinfo("Confirmation", "Order delivered successfully.")
-        self.switch_frame("Home")
 
     def show_missing_order_content(self):
         # Remove existing widgets in the right frame
@@ -192,13 +189,7 @@ class FeedbackPage:
         selected_option = self.var2.get()
         print("Selected Option:", selected_option)
 
-        
-    def send_feedback_button(self):
-        entered_text = self.more_information_entry.get()
-        add_feedback(self.finished_requests[0], self.var.get(), self.var2.get(), entered_text)
-
-
-
+    # negative feedback
     def send_feedback_button(self):
         entered_text = self.more_information_entry.get()
         selected_option1 = self.var.get()
@@ -217,11 +208,18 @@ class FeedbackPage:
         
         # success box
         messagebox.showinfo("Confirmation", "Feedback sent. Thanks for your help!")
-        self.switch_frame('Home')
+        self.switch_frame('Request Robot')
+        move_to_goal('Lager')
         
 
-def test(self, request):
-    update_request_status_to_delivered(request)
+def check_goal_reached(request):
+    if request:
+        if get_status == 'goal reached':
+            update_request_status_to_delivered(request)
+        else:
+            pass
+    else:
+        pass
 
 def get_request_delivering_for_current_user():
     current_user = get_current_user_email()
