@@ -1,3 +1,5 @@
+# chatgpt generated
+
 import unittest
 from unittest.mock import Mock
 import tkinter as tk

@@ -1,3 +1,5 @@
+# chatgpt generated
+
 import unittest
 from unittest.mock import patch, MagicMock
 from login_page import LoginPage
