@@ -136,11 +136,15 @@ def update_position(message):
           f"Position: z = {position['z']}\n"
           f"Orientation: w = {orientation['w']}")
 
-
+# 3. Feedback: Signal empfangen, dass der Turtlebot an Zielkoordinate angekommen ist
+# Welchen Status gibt es?
+# 1. "idle" 2. "delivering" 3. "goal reached"
 def update_status(message):
     status = message['data']
     print(f"Status: {status}")
 
-# 3. Feedback: Signal empfangen, dass der Turtlebot an Zielkoordinate angekommen ist
+
+# Wenn eine Nachricht von dem ausgewählten Roboter geschickt wird, wird update_position aufgerufen
 topic_robot_position.subscribe(update_position)
+# Wenn eine Nachricht von dem ausgewählten Roboter geschickt wird, wird update_status aufgerufen
 topic_robot_status.subscribe(update_status)
