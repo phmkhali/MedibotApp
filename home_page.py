@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from db import sign_out
 from PIL import ImageTk, Image  
+from websocket_methods import connect_to_medibot 
 
 class HomePage:
     def __init__(self, root, switch_frame):
@@ -42,20 +43,20 @@ class HomePage:
         select_robot = tk.Label(left_frame, text="Select Medibot", background='#333333', foreground='white')
         select_robot.grid(row=1, column=0, pady=10, sticky='w') 
 
-        options = ['Medibot 1', 'Medibot 2', 'Medibot 3']  # todo: Medibot connection
+        options = ['Medibot 1', 'Medibot 2', 'Medibot 3']  
         self.selected_option = tk.StringVar()
         medibot_dropdown = ttk.OptionMenu(left_frame, self.selected_option, *options)
         medibot_dropdown.config(width=25)
         medibot_dropdown.grid(row=2, column=0, sticky='w') 
 
-        connect_button = tk.Button(left_frame, relief='flat', background='#4C4273', foreground='white', text='Connect', width='12')
+        connect_button = tk.Button(left_frame, relief='flat', background='#4C4273', foreground='white', text='Connect', width='12', command=lambda: self.connect_to_medibot(self.selected_option))
         connect_button.grid(row=3, column=0, pady=10, sticky='w')
 
         # Status
         self.status_indicator = ttk.Label(left_frame, text='', background='#333333', foreground='white')
         self.status_indicator.grid(row=4, column=0, pady=40, sticky='sw')
         self.update_status('connected')  # Initial status
-
+        # zusätzliche status: connected, disconnected
         # Right side
         right_frame.grid_columnconfigure(0, weight=1)
         logout_button = tk.Button(right_frame, relief='flat', background='#E83C3C', text='Log out', width='12', command=lambda: self.switch_frame('Login'))
