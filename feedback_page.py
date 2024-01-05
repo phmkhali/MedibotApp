@@ -90,7 +90,6 @@ class FeedbackPage:
             self.status_label.grid(row=5,column=0,padx=10, pady=30, sticky='w')
             
             update_labels(self,active_requests[0])
-
                  
         elif self.finished_requests:
             self.select_title_label.grid(row=0, column=0, padx=10, pady=10, sticky='w')
@@ -185,20 +184,39 @@ class FeedbackPage:
 
     def on_radiobutton_click(self):
         selected_option = self.var.get()
-        print("Ausgewählte Option:", selected_option)
-        # hier vielleicht machen, das wenn ja ausgewählt wird Nein weg. und andersrum
+        print("Selected Option:", selected_option)
 
     def on_radiobutton_click2(self):
         selected_option = self.var2.get()
-        print("Ausgewählte Option:", selected_option)
+        print("Selected Option:", selected_option)
 
         
     def send_feedback_button(self):
         entered_text = self.more_information_entry.get()
         add_feedback(self.finished_requests[0], self.var.get(), self.var2.get(), entered_text)
-        # success box
 
-       
+
+
+    def send_feedback_button(self):
+        entered_text = self.more_information_entry.get()
+        selected_option1 = self.var.get()
+        selected_option2 = self.var2.get()
+
+        # Add feedback with selected options and entered text
+        add_feedback(self.finished_requests[0], selected_option1, selected_option2, entered_text)
+
+        # Clear selected options and text entry
+        self.var.set("") 
+        self.var2.set("")  
+        self.more_information_entry.delete(0, tk.END)  
+
+        self.right_frame.pack_forget()
+        self.update_feedback()
+        
+        # success box
+        messagebox.showinfo("Confirmation", "Feedback sent. Thanks for your help!")
+        self.switch_frame('Home')
+        
 
 def test(self, request):
     update_request_status_to_delivered(request)
@@ -213,7 +231,6 @@ def get_request_delivered_for_current_user():
     user_requests_delivered = get_requests_with_status_delivered(current_user)
     return user_requests_delivered
 
-                
 def update_labels(self, request):
     self.medication_label["text"] = f"{request.med_name}"
     self.quantity_label["text"] = f"{request.quantity}"
