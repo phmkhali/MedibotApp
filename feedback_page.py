@@ -193,12 +193,6 @@ class FeedbackPage:
         
     def send_feedback_button(self):
         entered_text = self.more_information_entry.get()
-        add_feedback(self.finished_requests[0], self.var.get(), self.var2.get(), entered_text)
-
-
-
-    def send_feedback_button(self):
-        entered_text = self.more_information_entry.get()
         selected_option1 = self.var.get()
         selected_option2 = self.var2.get()
 
@@ -215,7 +209,7 @@ class FeedbackPage:
         
         # success box
         messagebox.showinfo("Confirmation", "Feedback sent. Thanks for your help!")
-        self.switch_frame('Home')
+        self.switch_frame('Request Robot')
         
 
 def test(self, request):
