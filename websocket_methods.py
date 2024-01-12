@@ -1,16 +1,19 @@
 import time as t
-from roslibpy import Ros, Topic, Message, Pose
-from main import get_status
+from roslibpy import Ros, Topic, Message
 
 # 1. Verbindung zu TurtleBot
 # Je nachdem welcher Turtlebot ausgewählt ist, soll roslibpy eine Verbindung zu ihm aufbauen
+
 def connect_to_medibot(medibot="Medibot 1"):
-    client = Ros(host='localhost', port=8765)
+    client = Ros(host='localhost', port=8765) # automatischer connect?
+    print("Connected to Medibot 1.")
     if medibot == "Medibot 2":
         client = Ros(host='localhost', port=9090)
+        print("Connected to Medibot 2.")
     if medibot == "Medibot 3":
         client = Ros(host='localhost', port=9091)
-    return client
+        print("Connected to Medibot 3.")
+    
 
 client = connect_to_medibot()
 client.run()
