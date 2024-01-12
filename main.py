@@ -16,7 +16,6 @@ class App:
         self.root.resizable(False, False)
 
         self.frames = {}
-        clear_requests()
         self.create_frames()
         self.show_frame("Login")
 
