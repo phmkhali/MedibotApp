@@ -17,7 +17,7 @@ class HomePage:
         navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
         navbar_frame.pack(fill='x')
 
-        buttons = ['Home', 'Request Robot', 'Pending Requests', 'Feedback', 'Config']
+        buttons = ['Home', 'Request Robot', 'Pending Requests', 'Feedback']
         self.nav_buttons = []
         for button_text in buttons:
             if button_text == self.current_page:
