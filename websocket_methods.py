@@ -3,6 +3,7 @@ from roslibpy import Ros, Topic, Message
 
 # 1. Verbindung zu TurtleBot
 # Je nachdem welcher Turtlebot ausgewählt ist, soll roslibpy eine Verbindung zu ihm aufbauen
+is_connected = False
 
 def connect_to_medibot(medibot="Medibot 1"):
     client = Ros(host='192.168.50.42', port=8765) # automatischer connect?
@@ -13,10 +14,20 @@ def connect_to_medibot(medibot="Medibot 1"):
     if medibot == "Medibot 3":
         client = Ros(host='localhost', port=9091)
         print("Connected to Medibot 3.")
+        
+    # set is_connected True is connected
+    global is_connected
+    is_connected = True
     return client
 
+# disconnect method
+def disconnect_meditbot(medibot):
+    if not is_connected: # if disconnected
+        pass # disconnect
+        
 client = connect_to_medibot()
 client.run()
+
 
 topic_goal_coordinates = Topic(client, '/goal_coordinates', 'geometry_msgs/PoseStamped')
 topic_robot_status = Topic(client, '/robot_status', 'std_msgs/String')
