@@ -44,10 +44,10 @@ class HomePage:
 
         options = ['Medibot 1', 'Medibot 2', 'Medibot 3']  # todo: Medibot connection
         self.selected_option = tk.StringVar()
-        medibot_dropdown = ttk.OptionMenu(left_frame, self.selected_option, *options)
+        medibot_dropdown = ttk.OptionMenu(left_frame, self.selected_option, options[0],*options)
         medibot_dropdown.config(width=25)
         medibot_dropdown.grid(row=2, column=0, sticky='w') 
-
+    
         connect_button = tk.Button(left_frame, relief='flat', background='#4C4273', foreground='white', text='Connect', width='12')
         connect_button.grid(row=3, column=0, pady=10, sticky='w')
 
