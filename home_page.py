@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from db import sign_out
 from PIL import ImageTk, Image  
-from websocket_methods import connect_to_medibot 
+from websocket_methods import connect_to_medibot
 
 class HomePage:
     def __init__(self, root, switch_frame):
@@ -49,14 +49,13 @@ class HomePage:
         medibot_dropdown.config(width=25)
         medibot_dropdown.grid(row=2, column=0, sticky='w') 
 
-        connect_button = tk.Button(left_frame, relief='flat', background='#4C4273', foreground='white', text='Connect', width='12', command=lambda: self.connect_to_medibot(self.selected_option))
+        connect_button = tk.Button(left_frame, relief='flat', background='#4C4273', foreground='white', text='Connect', width='12', command=lambda: self.connect(self.selected_option))
         connect_button.grid(row=3, column=0, pady=10, sticky='w')
 
         # Status
         self.status_indicator = ttk.Label(left_frame, text='', background='#333333', foreground='white')
         self.status_indicator.grid(row=4, column=0, pady=40, sticky='sw')
-        self.update_status('connected')  # Initial status
-        # zusätzliche status: connected, disconnected
+
         # Right side
         right_frame.grid_columnconfigure(0, weight=1)
         logout_button = tk.Button(right_frame, relief='flat', background='#E83C3C', text='Log out', width='12', command=lambda: self.switch_frame('Login'))
@@ -68,12 +67,12 @@ class HomePage:
         map_label = tk.Label(right_frame, image=self.map_image, background='#333333')
         map_label.grid(row=1, column=0, pady=20, sticky='nsew')
 
-
-    def update_status(self, status):
-        if status == 'connected':
-            self.status_indicator.config(text='Status: Medibot 1 connected') 
+    def connect(self, selected_option):
+        if connect_to_medibot(selected_option):
+            self.status_indicator.config(text='Status: Medibot connected') 
         else:
-            self.status_indicator.config(text='Status: disconnected')
+            self.status_indicator.config(text='Status: Medibot disconnected')   
+        self.root.after(5000, self.connect)        
 
     def button_click(self, button_text):
         self.current_page = button_text  

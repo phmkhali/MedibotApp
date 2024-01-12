@@ -59,7 +59,7 @@ class FeedbackPage:
         # Get requests for the current user
         active_requests = get_request_delivering_for_current_user()
         self.finished_requests = get_request_delivered_for_current_user()
-        check_goal_reached()
+        check_goal_reached(active_requests)
 
         # Remove the existing left frame content
         for widget in self.left_frame.winfo_children():

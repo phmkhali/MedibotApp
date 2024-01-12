@@ -5,7 +5,7 @@ from roslibpy import Ros, Topic, Message
 # Je nachdem welcher Turtlebot ausgewählt ist, soll roslibpy eine Verbindung zu ihm aufbauen
 
 def connect_to_medibot(medibot="Medibot 1"):
-    client = Ros(host='localhost', port=8765) # automatischer connect?
+    client = Ros(host='192.168.50.42', port=8765) # automatischer connect?
     print("Connected to Medibot 1.")
     if medibot == "Medibot 2":
         client = Ros(host='localhost', port=9090)
@@ -13,7 +13,7 @@ def connect_to_medibot(medibot="Medibot 1"):
     if medibot == "Medibot 3":
         client = Ros(host='localhost', port=9091)
         print("Connected to Medibot 3.")
-    
+    return client
 
 client = connect_to_medibot()
 client.run()
@@ -31,8 +31,8 @@ def move_to_goal(target_room):
         'header': {
             'seq': 2,
             'stamp': {
-                t.secs: 1703250577,
-                t.nsecs: 195683151
+                "secs": 1703250577,
+                "nsecs": 195683151
             },
             'frame_id': "map"
         },
@@ -55,8 +55,8 @@ def move_to_goal(target_room):
         'header': {
             'seq': 5,
             'stamp': {
-                t.secs: 1703250991,
-                t.nsecs: 734503507
+                "secs": 1703250991,
+                "nsecs": 734503507
             },
             'frame_id': "map"
         },
@@ -79,8 +79,8 @@ def move_to_goal(target_room):
         'header': {
             'seq': 4,
             'stamp': {
-                t.secs: 1703250828,
-                t.nsecs: 136227384
+                "sec": 1703250828,
+                "nsecs": 136227384
             },
             'frame_id': "map"
         },
@@ -103,8 +103,8 @@ def move_to_goal(target_room):
         'header': {
             'seq': 3,
             'stamp': {
-                t.secs: 1703250690,
-                t.nsecs: 47779454
+                "secs": 1703250690,
+                "nsecs": 47779454
             },
             'frame_id': "map"
         },
