@@ -57,15 +57,25 @@ class HomePage:
         self.update_status('connected')  # Initial status
 
         # Right side
+        right_frame = tk.Frame(root)
         right_frame.grid_columnconfigure(0, weight=1)
         logout_button = tk.Button(right_frame, relief='flat', background='#E83C3C', text='Log out', width='12', command=lambda: self.switch_frame('Login'))
         logout_button.grid(row=0, column=0, pady=20, sticky='ne')
 
         # Map
-        map_image_path = 'map.pgm'  
+        map_image_path = 'map.pgm'
         self.map_image = ImageTk.PhotoImage(Image.open(map_image_path))
         map_label = tk.Label(right_frame, image=self.map_image, background='#333333')
-        map_label.grid(row=1, column=0, pady=20, sticky='nsew')
+        map_label.place(x=0, y=0)  # Hier wird das Bild mit der place-Methode platziert
+
+        # Koordinaten des Medibot
+        medibot_x = 100
+        medibot_y = 150
+
+        # Zeichne einen roten Punkt (Kreis) an den Medibot-Koordinaten
+        red_dot = tk.Canvas(right_frame, width=10, height=10, background='#333333', highlightthickness=0)
+        red_dot.create_oval(0, 0, 10, 10, fill="red", outline="red")
+        red_dot.place(x=medibot_x, y=medibot_y)  # Hier wird der rote Punkt mit der place-Methode platziert
 
 
     def update_status(self, status):
