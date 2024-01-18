@@ -50,11 +50,14 @@ class FeedbackPage:
     def on_button_leave(self, event):
         event.widget['background'] = '#a0a9de' 
 
-    def confirm_delivery_and_send_back(self):
+# -------------------------------------------------------------------------------------
+        # send back to storage room
+    def confirm_delivery_and_send_back(self, message):
         move_to_goal("Lager")
-        self.switch_frame("Home")   
-        messagebox.showinfo("Confirmation", "Order delivered successfully.")
-   
+        self.switch_frame("Request Robot")   
+        messagebox.showinfo(message)
+# -------------------------------------------------------------------------------------   
+
     def update_feedback(self):
         # Get requests for the current user
         active_requests = get_request_delivering_for_current_user()
@@ -64,8 +67,6 @@ class FeedbackPage:
         # Remove the existing left frame content
         for widget in self.left_frame.winfo_children():
             widget.destroy()
-
-        # Create the widgets outside the if condition
             
         # manually set status to delivered
        # self.test_button = tk.Button(self.left_frame, text="set status to delivered", background='yellow', relief='flat', foreground='black', width=20, command=lambda: test(self,active_requests[0]))
@@ -80,7 +81,7 @@ class FeedbackPage:
         self.patient_label = tk.Label(self.left_frame, text="Patient", background='#333333', foreground='white')
         self.status_label = tk.Label(self.left_frame, text="Status: currently delivering..", background='#333333', foreground='white')
 
-        self.order_received_button = tk.Button(self.left_frame, text="Order received", background='#4C4273', relief='flat', foreground='white', width=15, command=lambda: self.confirm_delivery_and_send_back())
+        self.order_received_button = tk.Button(self.left_frame, text="Order received", background='#4C4273', relief='flat', foreground='white', width=15, command=lambda: self.confirm_delivery_and_send_back("Confirmation", "Order delivered successfully."))
         self.order_missing_button = tk.Button(self.left_frame, text="Order missing", background='#E83C3C', relief='flat', foreground='white', width=15, command=lambda: self.show_missing_order_content())
 
         if active_requests:
@@ -205,11 +206,7 @@ class FeedbackPage:
 
         self.right_frame.pack_forget()
         self.update_feedback()
-        
-        # success box
-        messagebox.showinfo("Confirmation", "Feedback sent. Thanks for your help!")
-        self.switch_frame('Request Robot')
-        move_to_goal('Lager')
+        self.confirm_delivery_and_send_back("Feedback sent. Thanks for your help!")
         
 
 def check_goal_reached(request):

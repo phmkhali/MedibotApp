@@ -88,7 +88,6 @@ class PendingRequestsPage:
         if selection:
             selected_item = event.widget.item(selection, 'values')
             
-            # to do: add unit
             self.med_qty_label["text"] = f"Selected Item: {selected_item[1]} {selected_item[0]}"
             self.location_label["text"] = f"Send to: {selected_item[2]}"
             self.patient_name_label["text"] = f"Patient: {selected_item[3]}"
@@ -106,6 +105,8 @@ class PendingRequestsPage:
         elif button_text == 'Feedback':
             switch_frame('Feedback')  
      
+    # -------------------------------------------------------------------------------------
+            # send medibot to goal
     def submit_button(self, switch_frame):
         selection = self.tree.selection() 
         selected_item = None
@@ -120,7 +121,9 @@ class PendingRequestsPage:
             # command robot to start driving
             move_to_goal(corresponding_request.location)
             switch_frame("Feedback")
-              
+    # -------------------------------------------------------------------------------------
+
+
 # selected_request = next(request for request in self.all_requests if request.user == selected_values[0] and request.quantity == selected_values[1] and request.location == selected_values[2] and request.status == selected_values[3])
     
     def on_button_hover(self, event):
