@@ -1,12 +1,14 @@
 import time as t
 from roslibpy import Ros, Topic, Message
+import sshcontrol as ssh
+import time
 
 # 1. Verbindung zu TurtleBot
 # Je nachdem welcher Turtlebot ausgewählt ist, soll roslibpy eine Verbindung zu ihm aufbauen
 is_connected = False
 
 def connect_to_medibot(medibot="Medibot 1"):
-    client = Ros(host='192.168.50.42', port=8765) # automatischer connect?
+    client = Ros(host='192.168.50.52', port=8765) # automatischer connect?
     print("Connected to Medibot 1.")
     if medibot == "Medibot 2":
         client = Ros(host='localhost', port=9090)
@@ -18,7 +20,15 @@ def connect_to_medibot(medibot="Medibot 1"):
     # set is_connected True is connected
     global is_connected
     is_connected = True
+    try:
+        ssh.readyForDelivery()
+    except: 
+        print("Fehler bei SSH connection")  
+        return None
+            
     return client
+
+
 
 # disconnect method
 def disconnect_meditbot(medibot):
@@ -38,6 +48,7 @@ topic_robot_position = Topic(client, '/robot_position', 'geometry_msgs/Pose')
 # 5. Feedback: Fehlermeldung, falls möglich auch wieder zurück zum Lager
 # 2., 4. und 5.
 def move_to_goal(target_room):
+    
     room1 = {
         'header': {
             'seq': 2,
@@ -142,6 +153,16 @@ def move_to_goal(target_room):
         topic_goal_coordinates.publish(room3)
     elif target_room == "Lager":
         topic_goal_coordinates.publish(lager)
+    try:
+        ssh.onDelivery_led()
+        ssh.readyForDelivery()
+        time.sleep(5)
+        ssh.headlights() 
+    except: 
+        print("Fehler bei SSH connection")  
+        return None
+                
+       
 
 def update_position(message):
     position = message['position']

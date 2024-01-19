@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from db import get_requests, update_request_status_to_currently_delivering
 from websocket_methods import move_to_goal
+import sshcontrol as ssh
+import time
 
 class PendingRequestsPage:
     def __init__(self, root, switch_frame):
@@ -119,7 +121,7 @@ class PendingRequestsPage:
             update_request_status_to_currently_delivering(corresponding_request)
 
             # command robot to start driving
-            move_to_goal(corresponding_request.location)
+            move_to_goal(corresponding_request.location)    
             switch_frame("Feedback")
     # -------------------------------------------------------------------------------------
 
