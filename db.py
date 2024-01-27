@@ -15,7 +15,7 @@ current_user = ''
 #                       create_user(email="holdt@interim.hos", password="qwert123")
 
 # authentication
-def sign_in(email):
+def sign_in(email, password):
     global current_user # global variable
     try:
         user = auth.get_user_by_email(email)

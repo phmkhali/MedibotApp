@@ -44,7 +44,7 @@ class PendingRequestsPage:
         self.tree.pack(expand=True, fill='both')
         self.tree.bind("<<TreeviewSelect>>", self.on_select)
 
-        # fight frame detail view
+        # right frame detail view
         self.med_qty_label = ttk.Label(self.right_frame, text="")
         self.med_qty_label.pack(padx=10,pady=(10,0))
         

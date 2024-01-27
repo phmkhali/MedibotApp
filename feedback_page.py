@@ -10,6 +10,7 @@ class FeedbackPage:
         self.mainframe = tk.Frame(self.root, bg='#333333')
         self.mainframe.pack(expand=True, fill='both')
         self.mainframe.columnconfigure(0, weight=1)
+        self.switch_frame = switch_frame
 
         # update every 5 seconds
         self.root.after(5000, self.update_feedback)
@@ -23,8 +24,8 @@ class FeedbackPage:
 
         self.update_feedback()
 
-    # Methods --------------------------------------------------------------------------
-    def show_messagebox(self):
+    # methods --------------------------------------------------------------------------
+    def show_messagebox(self, switch_frame):
         self.switch_frame("Home")   
         messagebox.showinfo("Confirmation", "Order delivered successfully.")
    
@@ -36,11 +37,9 @@ class FeedbackPage:
         # Remove the existing left frame content
         for widget in self.left_frame.winfo_children():
             widget.destroy()
-
-        # Create the widgets outside the if condition
             
         # manually set status to delivered
-        self.test_button = tk.Button(self.left_frame, text="set status to delivered", background='yellow', relief='flat', foreground='black', width=20, command=lambda: test(self,active_requests[0]))
+        self.test_button = tk.Button(self.left_frame, text="set status to delivered", background='white', relief='flat', foreground='black', width=20, command=lambda: test(self,active_requests[0]))
         self.test_button.grid(row=0, column=1, padx=10, pady=10, sticky='w')
 
         self.select_title_label = tk.Label(self.left_frame, text="Order Summary", background='#333333', foreground='white')
@@ -52,7 +51,7 @@ class FeedbackPage:
         self.patient_label = tk.Label(self.left_frame, text="Patient", background='#333333', foreground='white')
         self.status_label = tk.Label(self.left_frame, text="Status: currently delivering..", background='#333333', foreground='white')
 
-        self.order_received_button = tk.Button(self.left_frame, text="Order received", background='#4C4273', relief='flat', foreground='white', width=15, command=lambda: self.show_messagebox())
+        self.order_received_button = tk.Button(self.left_frame, text="Order received", background='#4C4273', relief='flat', foreground='white', width=15, command=lambda: self.show_messagebox(self.switch_frame))
         self.order_missing_button = tk.Button(self.left_frame, text="Order missing", background='#E83C3C', relief='flat', foreground='white', width=15, command=lambda: self.show_missing_order_content())
 
         if active_requests:
@@ -90,10 +89,6 @@ class FeedbackPage:
         # next update after 5 seconds
         self.root.after(5000, self.update_feedback)
 
-    def show_messagebox(self):
-        messagebox.showinfo("Confirmation", "Order delivered successfully.")
-        self.switch_frame("Home")
-
     def show_missing_order_content(self):
         # Remove existing widgets in the right frame
         for widget in self.right_frame.winfo_children():
@@ -103,8 +98,8 @@ class FeedbackPage:
         style = ttk.Style()
         style.configure('TRadiobutton', background='#333333',foreground='white')
         
-        # Medibot_arrived
-        self.var = tk.StringVar()  # Variable for the Radiobutton
+        # medibot arrived?
+        self.var = tk.StringVar()  # variable for the Radiobutton
         arrived_label = tk.Label(self.right_frame, text="Has the Medibot arrived?", background='#333333',
                                  foreground='white')
         arrived_label.grid(row=0, column=0, padx=10, pady=(5, 0), sticky='w')
@@ -117,9 +112,9 @@ class FeedbackPage:
                                     command=self.on_radiobutton_click)
         no_arrived.grid(row=1, column=1, padx=10, pady=(5, 0), sticky='w')
 
-        # Medication_arrived
-        self.var2 = tk.StringVar()  # Variable for the Radiobutton
-        arrived_label = tk.Label(self.right_frame, text="Has all the medication arrived?", background='#333333',
+        # medication arrived?
+        self.var2 = tk.StringVar()  # variable for the Radiobutton
+        arrived_label = tk.Label(self.right_frame, text="Have all the medication arrived?", background='#333333',
                                  foreground='white')
         arrived_label.grid(row=2, column=0, padx=10, pady=(5, 0), sticky='w')
 
@@ -139,7 +134,7 @@ class FeedbackPage:
         self.more_information_entry.grid(row=5, column=0, padx=10, pady=(5, 0), sticky='w')
 
         send_feedback_button = tk.Button(self.right_frame, relief='flat', background='#4C4273', text="Send Feedback",
-                                         foreground='white', width='15', command=lambda: self.send_feedback_button())
+                                         foreground='white', width='15', command=lambda: self.send_feedback_button(self.switch_frame))
         send_feedback_button.grid(row=6, column=0, padx=10, pady=(20, 0), sticky='w')
 
         # Pack the right frame into the mainframe
@@ -153,16 +148,16 @@ class FeedbackPage:
         selected_option = self.var2.get()
         print("Selected Option:", selected_option)
 
-        
-    def send_feedback_button(self):
+    # submit feedback    
+    def send_feedback_button(self, switch_frame):
         entered_text = self.more_information_entry.get()
         selected_option1 = self.var.get()
         selected_option2 = self.var2.get()
 
-        # Add feedback with selected options and entered text
+        # add feedback to database
         add_feedback(self.finished_requests[0], selected_option1, selected_option2, entered_text)
 
-        # Clear selected options and text entry
+        # clear selected options and text entry
         self.var.set("") 
         self.var2.set("")  
         self.more_information_entry.delete(0, tk.END)  
@@ -174,9 +169,12 @@ class FeedbackPage:
         messagebox.showinfo("Confirmation", "Feedback sent. Thanks for your help!")
         self.switch_frame('Request Robot')
         
-
-def test(self, request):
-    update_request_status_to_delivered(request)
+# manually set the status
+def test(self,request):
+    try:
+        update_request_status_to_delivered(request)
+    except IndexError:
+        print('No requests to update. Try again.')
 
 def get_request_delivering_for_current_user():
     current_user = get_current_user_email()
@@ -194,7 +192,6 @@ def update_labels(self, request):
     self.location_label["text"] = f"{request.location}"
     self.patient_label["text"] = f"{request.patientName}"
                     
-# show currently processed order
 
 
         
