@@ -34,14 +34,17 @@ class PendingRequestsPage:
         self.tree.heading("Quantity", text="Quantity")
         self.tree.heading("Room", text="Room")
         
+        # tree columns
         self.tree.column("Medication", width=150, stretch=False) 
         self.tree.column("Quantity", width=100, stretch=False)
         self.tree.column("Room", width=100, stretch=False)  
 
+        # fill tree with db data
         self.fill_tree()
         self.tree.pack(expand=True, fill='both')
         self.tree.bind("<<TreeviewSelect>>", self.on_select)
 
+        # fight frame detail view
         self.med_qty_label = ttk.Label(self.right_frame, text="")
         self.med_qty_label.pack(padx=10,pady=(10,0))
         
@@ -69,8 +72,6 @@ class PendingRequestsPage:
 
         if selection:
             selected_item = event.widget.item(selection, 'values')
-            
-            # to do: add unit
             self.med_qty_label["text"] = f"Selected Item: {selected_item[1]} {selected_item[0]}"
             self.location_label["text"] = f"Send to: {selected_item[2]}"
             self.patient_name_label["text"] = f"Patient: {selected_item[3]}"
@@ -79,21 +80,22 @@ class PendingRequestsPage:
             self.right_frame.pack(side='right', pady=40, padx=(80,60), fill='both', expand=True) 
         else:
             self.right_frame.pack_forget()
-
      
+    # send order to room 
     def submit_button(self, switch_frame):
         selection = self.tree.selection() 
         selected_item = None
         if selection:
-            selected_item = self.tree.item(selection[0], 'values')
-            
+            selected_item = self.tree.item(selection[0], 'values')          
             all_requests = get_requests()
             corresponding_request_list = [request for request in all_requests if request.fire_id == selected_item[-1]]
             corresponding_request = corresponding_request_list[0]
+
+            # update status of delivery
             update_request_status_to_currently_delivering(corresponding_request)
             switch_frame("Feedback")
         
-    # tree methods
+    # tree methods ------------------------------------------------------------
     def update_tree(self):
         # get selected item before updating the tree
         selection = self.tree.selection()
