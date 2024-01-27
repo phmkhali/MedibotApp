@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from db import get_requests_with_status_delivering, get_requests_with_status_delivered, get_current_user_email, update_request_status_to_delivered, add_feedback
 from tkinter import messagebox
+from navbar import create_navbar
 
 class FeedbackPage:
     def __init__(self, root, switch_frame):
@@ -9,32 +10,12 @@ class FeedbackPage:
         self.mainframe = tk.Frame(self.root, bg='#333333')
         self.mainframe.pack(expand=True, fill='both')
         self.mainframe.columnconfigure(0, weight=1)
-        self.switch_frame = switch_frame
-        self.current_page = 'Feedback'
 
         # update every 5 seconds
         self.root.after(5000, self.update_feedback)
 
         # Navigation Bar-------------------------------------------------------------------------- 
-        navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
-        navbar_frame.pack(fill='x')
-
-        buttons = ['Home', 'Request Robot', 'Pending Requests', 'Feedback']
-        self.nav_buttons = []
-        for button_text in buttons:
-            button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text, switch_frame), bg='#a0a9de', bd=0)
-            button.config(height=4) 
-            button.pack(side='left', fill='both', expand=True)
-            self.nav_buttons.append(button)
-            button.bind("<Enter>", self.on_button_hover)  # hover event
-            button.bind("<Leave>", self.on_button_leave)  # leave event
-            
-        # Update button colors
-        for button in self.nav_buttons:
-            if button.cget('text') == self.current_page:
-                button['background'] = '#8c94c6'
-            else:
-                button['background'] = '#a0a9de'
+        create_navbar(self.mainframe, switch_frame)
 
         # Page Content-------------------------------------------------------------------------- 
         self.left_frame = tk.Frame(self.mainframe, width=350, height=400, background='#333333')
@@ -42,13 +23,7 @@ class FeedbackPage:
 
         self.update_feedback()
 
-    # Methods -------------------------------------------------------------------------- 
-    def on_button_hover(self, event):
-        event.widget['background'] = '#8c94c6' 
-
-    def on_button_leave(self, event):
-        event.widget['background'] = '#a0a9de' 
-
+    # Methods --------------------------------------------------------------------------
     def show_messagebox(self):
         self.switch_frame("Home")   
         messagebox.showinfo("Confirmation", "Order delivered successfully.")
@@ -169,18 +144,6 @@ class FeedbackPage:
 
         # Pack the right frame into the mainframe
         self.right_frame.pack(fill='both', side='right', pady=60, padx=(0, 60))
-
-    def button_click(self,button_text, switch_frame):
-                if button_text == 'Request Robot':
-                    switch_frame('Request Robot')
-                elif button_text == 'Home':
-                    switch_frame('Home')
-                elif button_text == 'Pending Requests':
-                    switch_frame('Pending Requests')     
-                elif button_text == 'Feedback':
-                    switch_frame('Feedback')   
-                elif button_text == "Confirm":
-                    pass
 
     def on_radiobutton_click(self):
         selected_option = self.var.get()

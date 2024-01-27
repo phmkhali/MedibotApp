@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from db import get_requests, update_request_status_to_currently_delivering
+from navbar import create_navbar
 
 class PendingRequestsPage:
     def __init__(self, root, switch_frame):
@@ -13,25 +14,7 @@ class PendingRequestsPage:
         self.root.after(5000, self.update_tree)
 
         # Navigation Bar-------------------------------------------------------------------------- 
-        navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
-        navbar_frame.pack(fill='x')
-
-        buttons = ['Home', 'Request Robot', 'Pending Requests', 'Feedback']
-        self.nav_buttons = []
-        for button_text in buttons:
-            button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text, switch_frame), bg='#a0a9de', bd=0)
-            button.config(height=4) 
-            button.pack(side='left', fill='both', expand=True)
-            self.nav_buttons.append(button)
-            button.bind("<Enter>", self.on_button_hover)  # hover event
-            button.bind("<Leave>", self.on_button_leave)  # leave event
-            
-        # Update button colors
-        for button in self.nav_buttons:
-            if button.cget('text') == self.current_page:
-                button['background'] = '#8c94c6'
-            else:
-                button['background'] = '#a0a9de'
+        create_navbar(self.mainframe, switch_frame)
                 
         # Page Content--------------------------------------------------------------------------
 
@@ -97,13 +80,6 @@ class PendingRequestsPage:
         else:
             self.right_frame.pack_forget()
 
-    def button_click(self, button_text, switch_frame):
-        if button_text == 'Request Robot':
-            switch_frame('Request Robot')
-        elif button_text == 'Home':
-            switch_frame('Home')
-        elif button_text == 'Feedback':
-            switch_frame('Feedback')  
      
     def submit_button(self, switch_frame):
         selection = self.tree.selection() 
@@ -116,14 +92,6 @@ class PendingRequestsPage:
             corresponding_request = corresponding_request_list[0]
             update_request_status_to_currently_delivering(corresponding_request)
             switch_frame("Feedback")
-              
-# selected_request = next(request for request in self.all_requests if request.user == selected_values[0] and request.quantity == selected_values[1] and request.location == selected_values[2] and request.status == selected_values[3])
-    
-    def on_button_hover(self, event):
-        event.widget['background'] = '#8c94c6' 
-
-    def on_button_leave(self, event):
-        event.widget['background'] = '#a0a9de' 
         
     # tree methods
     def update_tree(self):

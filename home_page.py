@@ -9,7 +9,6 @@ class HomePage:
         self.root = root
         self.mainframe = tk.Frame(self.root, bg='#333333')
         self.mainframe.pack(expand=True, fill='both')
-        self.switch_frame = switch_frame
 
         # Navigation Bar-------------------------------------------------------------------------- 
         create_navbar(self.mainframe, switch_frame)
