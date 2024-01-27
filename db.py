@@ -9,22 +9,24 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 current_user = ''
 
-#db.collection('medications').add({'name':'paracetamol', 'dose':400})
+#   manually add a medication to the database:  db.collection('medications').add({'name':'paracetamol', 'dose':400})
+#   current users:      create_user(email="smith@doctor.hos", password="123456")
+#                       create_user(email="jones@doctor.hos", password="123456")
+#                       create_user(email="holdt@interim.hos", password="qwert123")
 
-#Authentication
-def sign_in(email, password):
+# authentication
+def sign_in(email):
     global current_user # global variable
     try:
         user = auth.get_user_by_email(email)
         print('Successfully signed in as:', user.uid)
         current_user = email
         return user.uid
-    #except auth.AuthError as e:
     except FirebaseError as e:
-       # print('Error signing in':, e)
+        print('Error signing in:', e)
         return None
 
-#create user
+# create user
 def create_user(email, password):
     try:
         user = auth.create_user(
@@ -33,14 +35,12 @@ def create_user(email, password):
         )
         print('Successfully created user:', user.uid)
         return user.uid
-   # except firebase_admin.auth.AuthError as e:
     except FirebaseError as e:
         print('Error creating user:', e)
         return None
     
 def get_current_user_email():
     return current_user
-
 
 # get meds from db
 def get_medication_db():
@@ -85,7 +85,6 @@ def create_request(location, medName, quantity, patientName):
     document_id = new_request_ref[1].id
     new_request_ref[1].update({'fire_id': document_id})
 
-    
 def clear_requests():
     try:
         requests_ref = db.collection("request")
@@ -115,7 +114,7 @@ def update_request_status_to_failed(request):
     request_ref.update({ "status": "failed" })    
     
 def add_feedback(request, medibot_arrived, medication_arrived, information_text):
-    collection_referenz = db.collection("feedback").add({
+    collection_reference = db.collection("feedback").add({
         'request_id':request.fire_id,
         'medibot_arrived':medibot_arrived,
         'medication_arrived':medication_arrived,
@@ -159,10 +158,6 @@ def get_requests_with_status_delivered(current_user):
     
     requests_with_delivered_status = [request for request in all_requests if request.status == "delivered" and request.user == current_user]
     return requests_with_delivered_status
-
-#create_user(email="smith@doctor.hos", password="123456")
-#create_user(email="jones@doctor.hos", password="123456")
-#create_user(email="holdt@interim.hos", password="qwert123")
 
 def sign_out():
     try:

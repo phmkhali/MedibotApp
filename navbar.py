@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from db import sign_out
 
+# reusable navbar for all tabs
 def create_navbar(mainframe, switch_frame):
     navbar_frame = tk.Frame(mainframe, background='#a0a9de')
     navbar_frame.pack(fill='x')
