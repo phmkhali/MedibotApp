@@ -2,32 +2,17 @@ import tkinter as tk
 from tkinter import ttk
 from db import sign_out
 from PIL import ImageTk, Image  
+from navbar import create_navbar
 
 class HomePage:
     def __init__(self, root, switch_frame):
         self.root = root
         self.mainframe = tk.Frame(self.root, bg='#333333')
         self.mainframe.pack(expand=True, fill='both')
-
-        self.current_page = 'Home'
         self.switch_frame = switch_frame
 
         # Navigation Bar-------------------------------------------------------------------------- 
-        navbar_frame = tk.Frame(self.mainframe, background='#a0a9de')
-        navbar_frame.pack(fill='x')
-
-        buttons = ['Home', 'Request Robot', 'Pending Requests', 'Feedback']
-        self.nav_buttons = []
-        for button_text in buttons:
-            if button_text == self.current_page:
-                button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text), bg='#8c94c6', bd=0)
-            else:
-                button = tk.Button(navbar_frame, text=button_text, command=lambda text=button_text: self.button_click(text), bg='#a0a9de', bd=0)
-            button.config(height=4) 
-            button.pack(side='left', fill='both', expand=True)
-            self.nav_buttons.append(button)
-            button.bind("<Enter>", self.on_button_hover)  # hover event
-            button.bind("<Leave>", self.on_button_leave)  # leave event
+        create_navbar(self.mainframe, switch_frame)
 
         # Home Page Content-------------------------------------------------------------------------- 
         left_frame = tk.Frame(self.mainframe, width=300, background='#333333')
@@ -73,33 +58,6 @@ class HomePage:
             self.status_indicator.config(text='Status: Medibot 1 connected') 
         else:
             self.status_indicator.config(text='Status: disconnected')
-
-    def button_click(self, button_text):
-        self.current_page = button_text  
-        for button in self.nav_buttons:
-            if button.cget('text') == button_text:
-                button['background'] = '#8c94c6'
-            else:
-                button['background'] = '#a0a9de'
-
-        if button_text == 'Home':
-            self.switch_frame('Home')
-        elif button_text == 'Log out':
-            sign_out()  
-        elif button_text == 'Request Robot':
-            self.switch_frame('Request Robot')
-        elif button_text == 'Pending Requests':
-            self.switch_frame('Pending Requests')  
-        elif button_text == 'Feedback':
-            self.switch_frame('Feedback')  
-        else:
-            self.switch_frame(button_text)
-
-    def on_button_hover(self, event):
-        event.widget['background'] = '#8c94c6'
-
-    def on_button_leave(self, event):
-        event.widget['background'] = '#a0a9de'
 
 if __name__ == '__main__':
     root = tk.Tk()
