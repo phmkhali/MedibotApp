@@ -31,11 +31,6 @@ class LoginPage:
     def check_credentials(self, switch_frame):
         username = self.username_text_field.get()
         password = self.password_text_field.get()
-        #if username == "admin" and password == "admin":
-        #    switch_frame("Home")
-        #else:
-        #    messagebox.showerror("Login Error", "Invalid username or password")
-        #self.clear_fields()
         if username == "" or password == "":
             messagebox.showerror("Login Error", "Invalid username or password")
         else:
