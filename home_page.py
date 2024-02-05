@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from db import sign_out
 from PIL import ImageTk, Image  
 from navbar import create_navbar
 
@@ -42,7 +41,7 @@ class HomePage:
 
         # Right side
         right_frame.grid_columnconfigure(0, weight=1)
-        logout_button = tk.Button(right_frame, relief='flat', background='#E83C3C', text='Log out', width='12', command=lambda: self.switch_frame('Login'))
+        logout_button = tk.Button(right_frame, relief='flat', background='#E83C3C', text='Log out', width='12', command=lambda: self.logout(switch_frame))
         logout_button.grid(row=0, column=0, pady=20, sticky='ne')
 
         # Map
@@ -57,6 +56,9 @@ class HomePage:
             self.status_indicator.config(text='Status: Medibot 1 connected') 
         else:
             self.status_indicator.config(text='Status: disconnected')
+    
+    def logout(self, switch_frame):
+        switch_frame("Login")
 
 if __name__ == '__main__':
     root = tk.Tk()
